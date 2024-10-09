@@ -13,7 +13,7 @@
         "./*.ts",
         "./examples/**/*.ts",
         "./lib/**/*.ts",
-        "./test/**/*.ts",
+        "./test/**/*.ts", "test/utils.test.js",
     ],          
     "exclude": ["node_modules"]     
 }
