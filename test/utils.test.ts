@@ -6,9 +6,9 @@ const toLanguageObjectTest = test.macro((t, input, expected) => {
   t.deepEqual(result, expected);
 });
 
-//test("toLanguageObject with undefined input returns null", toLanguageObjectTest, undefined, null);
+test("toLanguageObject with undefined input returns null", toLanguageObjectTest, undefined, null);
 test("toLanguageObject with null input returns null", toLanguageObjectTest, null, null);
-//test("toLanguageObject with empty string returns null", toLanguageObjectTest, "", null);
+test("toLanguageObject with empty string returns null", toLanguageObjectTest, "", null);
 
 test("toLanguageObject with string returns english text", toLanguageObjectTest, "foobar", { en: "foobar" });
 
