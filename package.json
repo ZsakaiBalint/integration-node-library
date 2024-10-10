@@ -31,8 +31,9 @@
 	},
 	"scripts": {
 		"format": "prettier --write \"**/*.ts\"",
-		"lint": "npm run format && eslint --fix",
-		"test": "npm run build && ava dist/test/**/*.js",
+		"lint": "eslint --fix",
+		"code-check": "prettier --check \"**/*.ts\" && eslint",
+ 		"test": "npm run build && ava dist/test/**/*.js",
 		"build": "tsc && copyfiles \"{examples,lib,test}/**/*.json\" dist/"
 	},
 	"repository": {

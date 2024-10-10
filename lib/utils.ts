@@ -13,18 +13,16 @@
  * @param {string | Map<string, string> | Record<string, string>} text
  * @return {{ [key: string]: string }}
  */
-function toLanguageObject(text: string | Map<string, string> | Record<string, string> | undefined | null): 
-Record<string, string> | null | undefined {
-  if(text === undefined) {
+function toLanguageObject(
+  text: string | Map<string, string> | Record<string, string> | undefined | null
+): Record<string, string> | null | undefined {
+  if (text === undefined) {
     return null;
-  }
-  else if (typeof text === "string") {
+  } else if (typeof text === "string") {
     return text.trim() === "" ? null : { en: text };
-  } 
-  else if (text instanceof Map) {
+  } else if (text instanceof Map) {
     return Object.fromEntries(text);
-  } 
-  else {
+  } else {
     return text;
   }
 }
