@@ -1,8 +1,8 @@
 import test from "ava";
-import { toLanguageObject, getDefaultLanguageString } from "../lib/entities/utils";
+import { toLanguageObject, getDefaultLanguageString } from "../lib/utils";
 
 const toLanguageObjectTest = test.macro((t, input, expected) => {
-  const result = toLanguageObject(input);
+  const result = toLanguageObject(input as string);
   t.deepEqual(result, expected);
 });
 
@@ -32,7 +32,7 @@ test(
 );
 
 const defaultLanguageString = test.macro((t, input, expected) => {
-  const result = getDefaultLanguageString(input);
+  const result = getDefaultLanguageString(input as Record<string, string>);
   t.deepEqual(result, expected);
 });
 
