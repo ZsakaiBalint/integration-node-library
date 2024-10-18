@@ -15,7 +15,7 @@ import assert from "node:assert";
 /**
  * Available entity types.
  */
-enum TYPES {
+export enum TYPES {
   COVER = "cover",
   BUTTON = "button",
   CLIMATE = "climate",
@@ -26,7 +26,7 @@ enum TYPES {
   SWITCH = "switch"
 }
 
-type CommandHandler = (
+export type CommandHandler = (
   entity: Entity,
   command: string,
   params?: Record<string, string | object | unknown>
@@ -45,7 +45,7 @@ interface EntityParams {
   cmdHandler?: CommandHandler | null;
 }
 
-class Entity {
+export class Entity {
   public id: string;
   public name: string | Record<string, string>;
   public entity_type: string;
@@ -73,7 +73,11 @@ class Entity {
   ) {
     assert(typeof id === "string", "Entity parameter id must be a string");
     this.id = id;
-    this.name = toLanguageObject(name); // Assuming toLanguageObject converts to the appropriate structure
+
+    const languageName = toLanguageObject(name);
+    assert(languageName);
+    this.name = languageName || "?";
+
     assert(typeof entityType === "string", "Entity parameter entityType must be a string");
     this.entity_type = entityType;
     this.device_id = null; // not yet supported
@@ -137,6 +141,3 @@ class Entity {
     return STATUS_CODES.NOT_IMPLEMENTED.toString();
   }
 }
-
-export default Entity;
-export { TYPES, CommandHandler };
