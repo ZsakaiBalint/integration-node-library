@@ -12,7 +12,6 @@ import WebSocket from "ws";
 import { WebSocketServer } from "ws";
 import { EventEmitter } from "events";
 
-
 import { toLanguageObject, getDefaultLanguageString } from "./lib/utils.js";
 import { DEVICE_STATES, EVENTS, STATUS_CODES, setup } from "./lib/api_definitions.js";
 
@@ -21,7 +20,6 @@ import * as api_definitions from "./lib/api_definitions.js";
 import * as entities from "./lib/entities/entities.js";
 
 import { CommandHandler } from "./lib/entities/entities.js";
-
 
 interface Developer {
   name: string;
@@ -45,7 +43,7 @@ class IntegrationAPI extends EventEmitter {
   private server: WebSocket.Server;
   private clients: Map<WebSocket, any>;
   private setupHandler: any;
-  private availableEntities: entities.Entities
+  private availableEntities: entities.Entities;
   private configuredEntities: entities.Entities;
 
   constructor() {
@@ -68,15 +66,22 @@ class IntegrationAPI extends EventEmitter {
     this.configuredEntities = new entities.Entities("configured");
 
     // connect to update events for entity attributes
-    this.configuredEntities.on(api_definitions.EVENTS.ENTITY_ATTRIBUTES_UPDATED, async (entityId, entityType, attributes) => {
-      const data = {
-        entity_id: entityId,
-        entity_type: entityType,
-        attributes: attributes instanceof Map ? Object.fromEntries(attributes) : attributes
-      };
+    this.configuredEntities.on(
+      api_definitions.EVENTS.ENTITY_ATTRIBUTES_UPDATED,
+      async (entityId, entityType, attributes) => {
+        const data = {
+          entity_id: entityId,
+          entity_type: entityType,
+          attributes: attributes instanceof Map ? Object.fromEntries(attributes) : attributes
+        };
 
-      await this.#broadcastEvent(api_definitions.MSG_EVENTS.ENTITY_CHANGE, data, api_definitions.EVENT_CATEGORY.ENTITY);
-    });
+        await this.#broadcastEvent(
+          api_definitions.MSG_EVENTS.ENTITY_CHANGE,
+          data,
+          api_definitions.EVENT_CATEGORY.ENTITY
+        );
+      }
+    );
   }
 
   /**
@@ -824,7 +829,6 @@ class IntegrationAPI extends EventEmitter {
     );
   }
 
-
   public getConfiguredEntities(): entities.Entities {
     return this.configuredEntities;
   }
@@ -833,7 +837,7 @@ class IntegrationAPI extends EventEmitter {
     return this.availableEntities;
   }
 
-  public getDriverUrl() : string | undefined {
+  public getDriverUrl(): string | undefined {
     return this.driverInfo.driver_url;
   }
 
@@ -870,7 +874,7 @@ const uc = Object.assign(new IntegrationAPI(), {
   entities,
   setup,
   ui,
-  api_definitions,
+  api_definitions
 }) as IntegrationAPI & {
   IntegrationAPI: typeof IntegrationAPI;
   DEVICE_STATES: typeof DEVICE_STATES;
@@ -884,7 +888,4 @@ const uc = Object.assign(new IntegrationAPI(), {
 
 export default uc;
 
-
-export type {
-  CommandHandler
-};
+export type { CommandHandler };

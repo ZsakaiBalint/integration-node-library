@@ -20,7 +20,6 @@ import { Switch } from "./switch.js";
 import { EVENTS } from "../api_definitions.js";
 import log from "../loggers.js";
 
-
 class Entities extends EventEmitter {
   private storage: Record<string, Entity>;
 
@@ -137,19 +136,6 @@ class Entities extends EventEmitter {
   }
 }
 
-
-export {
-  ENTITYTYPES, 
-  Entities, 
-  Entity, 
-  Button, 
-  Climate, 
-  Cover, 
-  Light, 
-  MediaPlayer, 
-  Remote, 
-  Sensor, 
-  Switch,
-};
+export { ENTITYTYPES, Entities, Entity, Button, Climate, Cover, Light, MediaPlayer, Remote, Sensor, Switch };
 
 export type { CommandHandler };
