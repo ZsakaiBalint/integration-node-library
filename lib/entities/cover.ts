@@ -6,70 +6,70 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, TYPES as ENTITYTYPES } from "./entity.js";
+import { CommandHandler, Types as EntityTypes } from "./entity.js";
 import { Entity } from "./entity.js";
 import log from "../loggers.js";
 
 // Cover entity states
-export enum STATES {
-  UNAVAILABLE = "UNAVAILABLE",
-  UNKNOWN = "UNKNOWN",
-  OPENING = "OPENING",
-  OPEN = "OPEN",
-  CLOSING = "CLOSING",
-  CLOSED = "CLOSED"
+export enum States {
+  Unavailable = "UNAVAILABLE",
+  Unknown = "UNKNOWN",
+  Opening = "OPENING",
+  Open = "OPEN",
+  Closing = "CLOSING",
+  Closed = "CLOSED"
 }
 
 // Cover entity features
-export enum FEATURES {
-  OPEN = "open",
-  CLOSE = "close",
-  STOP = "stop",
-  POSITION = "position",
-  TILT = "tilt",
-  TILT_STOP = "tilt_stop",
-  TILT_POSITION = "tilt_position"
+export enum Features {
+  Open = "open",
+  Close = "close",
+  Stop = "stop",
+  Position = "position",
+  Tilt = "tilt",
+  TiltStop = "tilt_stop",
+  TiltPosition = "tilt_position"
 }
 
 // Cover entity attributes
-export enum ATTRIBUTES {
-  STATE = "state",
-  POSITION = "position",
-  TILT_POSITION = "tilt_position"
+export enum Attributes {
+  State = "state",
+  Position = "position",
+  TiltPosition = "tilt_position"
 }
 
 // Cover entity commands
-export enum COMMANDS {
-  OPEN = "open",
-  CLOSE = "close",
-  STOP = "stop",
-  POSITION = "position",
-  TILT = "tilt",
-  TILT_UP = "tilt_up",
-  TILT_DOWN = "tilt_down",
-  TILT_STOP = "tilt_stop"
+export enum Commands {
+  Open = "open",
+  Close = "close",
+  Stop = "stop",
+  Position = "position",
+  Tilt = "tilt",
+  TiltUp = "tilt_up",
+  TiltDown = "tilt_down",
+  TiltStop = "tilt_stop"
 }
 
 // Cover entity device classes
-export enum DEVICECLASSES {
-  BLIND = "blind",
-  CURTAIN = "curtain",
-  GARAGE = "garage",
-  SHADE = "shade",
-  DOOR = "door",
-  GATE = "gate",
-  WINDOW = "window"
+export enum DeviceClasses {
+  Blind = "blind",
+  Curtain = "curtain",
+  Garage = "garage",
+  Shade = "shade",
+  Door = "door",
+  Gate = "gate",
+  Window = "window"
 }
 
 // Cover entity options
-export enum OPTIONS {}
+export enum Options {}
 
 // Define types for the parameters in the constructor
 interface CoverParams {
   features?: string[];
-  attributes?: Partial<Record<ATTRIBUTES, STATES | number | boolean | string>>;
+  attributes?: Partial<Record<Attributes, States | number | boolean | string>>;
   deviceClass?: string;
-  options?: Partial<Record<OPTIONS, number | string | boolean>> | null;
+  options?: Partial<Record<Options, number | string | boolean>> | null;
   area?: string;
   cmdHandler?: CommandHandler | null;
 }
@@ -89,7 +89,7 @@ export class Cover extends Entity {
     name: string | Map<string, string> | Record<string, string>,
     { features = [], attributes = {}, deviceClass, options = null, area, cmdHandler }: CoverParams = {}
   ) {
-    super(id, name, ENTITYTYPES.COVER, { features, attributes, deviceClass, options, area, cmdHandler });
+    super(id, name, EntityTypes.Cover, { features, attributes, deviceClass, options, area, cmdHandler });
 
     log.debug(`Cover entity created with id: ${this.id}`);
   }

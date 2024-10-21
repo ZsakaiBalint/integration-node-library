@@ -6,71 +6,71 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, TYPES as ENTITYTYPES } from "./entity.js";
+import { CommandHandler, Types as EntityTypes } from "./entity.js";
 import { Entity } from "./entity.js";
 import log from "../loggers.js";
 
 // Climate entity states
-export enum STATES {
-  UNAVAILABLE = "UNAVAILABLE",
-  UNKNOWN = "UNKNOWN",
-  OFF = "OFF",
-  HEAT = "HEAT",
-  COOL = "COOL",
-  HEAT_COOL = "HEAT_COOL",
-  FAN = "FAN",
-  AUTO = "AUTO"
+export enum States {
+  Unavailable = "UNAVAILABLE",
+  Unknown = "UNKNOWN",
+  Off = "OFF",
+  Heat = "HEAT",
+  Cool = "COOL",
+  HeatCool = "HEAT_COOL",
+  Fan = "FAN",
+  Auto = "AUTO"
 }
 
 // Climate entity features
-export enum FEATURES {
-  ON_OFF = "on_off",
-  HEAT = "heat",
-  COOL = "cool",
-  CURRENT_TEMPERATURE = "current_temperature",
-  TARGET_TEMPERATURE = "target_temperature",
-  TARGET_TEMPERATURE_RANGE = "target_temperature_range",
-  FAN = "fan"
+export enum Features {
+  OnOff = "on_off",
+  Heat = "heat",
+  Cool = "cool",
+  CurrentTemperature = "current_temperature",
+  TargetTemperature = "target_temperature",
+  TargetTemperatureRange = "target_temperature_range",
+  Fan = "fan"
 }
 
 // Climate entity attributes
-export enum ATTRIBUTES {
-  STATE = "state",
-  CURRENT_TEMPERATURE = "current_temperature",
-  TARGET_TEMPERATURE = "target_temperature",
-  TARGET_TEMPERATURE_HIGH = "target_temperature_high",
-  TARGET_TEMPERATURE_LOW = "target_temperature_low",
-  FAN_MODE = "fan_mode"
+export enum Attributes {
+  State = "state",
+  CurrentTemperature = "current_temperature",
+  TargetTemperature = "target_temperature",
+  TargetTemperatureHigh = "target_temperature_high",
+  TargetTemperatureLow = "target_temperature_low",
+  FanMode = "fan_mode"
 }
 
 // Climate entity commands
-export enum COMMANDS {
-  ON = "on",
-  OFF = "off",
-  HVAC_MODE = "hvac_mode",
-  TARGET_TEMPERATURE = "target_temperature",
-  TARGET_TEMPERATURE_RANGE = "target_temperature_range",
-  FAN_MODE = "fan_mode"
+export enum Commands {
+  On = "on",
+  Off = "off",
+  HvacMode = "hvac_mode",
+  TargetTemperature = "target_temperature",
+  TargetTemperatureRange = "target_temperature_range",
+  FanMode = "fan_mode"
 }
 
 // Climate entity device classes
-export enum DEVICECLASSES {}
+export enum DeviceClasses {}
 
 // Climate entity options
-export enum OPTIONS {
-  TEMPERATURE_UNIT = "temperature_unit",
-  TARGET_TEMPERATURE_STEP = "target_temperature_step",
-  MAX_TEMPERATURE = "max_temperature",
-  MIN_TEMPERATURE = "min_temperature",
-  FAN_MODES = "fan_modes"
+export enum Options {
+  TemperatureUnit = "temperature_unit",
+  TargetTemperatureStep = "target_temperature_step",
+  MaxTemperature = "max_temperature",
+  MinTemperature = "min_temperature",
+  FanModes = "fan_modes"
 }
 
 // Define types for the parameters in the constructor
 interface ClimateParams {
   features?: string[];
-  attributes?: Map<ATTRIBUTES, STATES> | object;
+  attributes?: Map<Attributes, States> | object;
   deviceClass?: string;
-  options?: Partial<Record<OPTIONS, string>> | null;
+  options?: Partial<Record<Options, string>> | null;
   area?: string;
   cmdHandler?: CommandHandler | null;
 }
@@ -90,7 +90,7 @@ export class Climate extends Entity {
     name: string | Map<string, string> | Record<string, string>,
     { features = [], attributes = {}, deviceClass, options = null, area, cmdHandler }: ClimateParams = {}
   ) {
-    super(id, name, ENTITYTYPES.CLIMATE, { features, attributes, deviceClass, options, area, cmdHandler });
+    super(id, name, EntityTypes.Climate, { features, attributes, deviceClass, options, area, cmdHandler });
 
     log.debug(`Climate entity created with id: ${this.id}`);
   }

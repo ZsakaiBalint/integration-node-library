@@ -1,5 +1,5 @@
 import test from "ava";
-import { MediaPlayer, OPTIONS, FEATURES, STATES, ATTRIBUTES } from "../lib/entities/media_player.js";
+import { MediaPlayer, Options, Features, States, Attributes } from "../lib/entities/media_player.js";
 
 test("MediaPlayer constructor without parameter object creates default MediaPlayer class", (t) => {
   const entity = new MediaPlayer("test", "Test MediaPlayer");
@@ -17,17 +17,17 @@ test("MediaPlayer constructor without parameter object creates default MediaPlay
 });
 
 test("MediaPlayer constructor with parameter object", (t) => {
-  const options: Partial<Record<OPTIONS, number>> = {
-    [OPTIONS.VOLUME_STEPS]: 10
+  const options: Partial<Record<Options, number>> = {
+    [Options.VolumeSteps]: 10
   };
 
-  const attributes: Partial<Record<ATTRIBUTES, STATES | number>> = {
-    [ATTRIBUTES.STATE]: STATES.UNAVAILABLE,
-    [ATTRIBUTES.VOLUME]: 22
+  const attributes: Partial<Record<Attributes, States | number>> = {
+    [Attributes.State]: States.Unavailable,
+    [Attributes.Volume]: 22
   };
 
   const entity = new MediaPlayer("test", "Test MediaPlayer", {
-    features: [FEATURES.MENU],
+    features: [Features.Menu],
     attributes,
     options,
     area: "Test lab"
@@ -46,10 +46,10 @@ test("MediaPlayer constructor with parameter object", (t) => {
 });
 
 test("MediaPlayer constructor with Object attributes", (t) => {
-  const defaultAttributes: Partial<Record<ATTRIBUTES, number | boolean>> = {
-    [ATTRIBUTES.SHUFFLE]: false,
-    [ATTRIBUTES.MUTED]: false,
-    [ATTRIBUTES.VOLUME]: 25
+  const defaultAttributes: Partial<Record<Attributes, number | boolean>> = {
+    [Attributes.Shuffle]: false,
+    [Attributes.Muted]: false,
+    [Attributes.Volume]: 25
   };
 
   const entity = new MediaPlayer("test", "Test MediaPlayer", {

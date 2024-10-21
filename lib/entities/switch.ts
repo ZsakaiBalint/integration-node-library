@@ -6,53 +6,53 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, TYPES as ENTITYTYPES } from "./entity.js";
+import { CommandHandler, Types as EntityTypes } from "./entity.js";
 import { Entity } from "./entity.js";
 import log from "../loggers.js";
 
 // Switch entity states
-export enum STATES {
-  UNAVAILABLE = "UNAVAILABLE",
-  UNKNOWN = "UNKNOWN",
-  ON = "ON",
-  OFF = "OFF"
+export enum States {
+  Unavailable = "UNAVAILABLE",
+  Unknown = "UNKNOWN",
+  On = "ON",
+  Off = "OFF"
 }
 
 // Switch entity features
-export enum FEATURES {
-  ON_OFF = "on_off",
-  TOGGLE = "toggle"
+export enum Features {
+  OnOff = "on_off",
+  Toggle = "toggle"
 }
 
 // Switch entity attributes
-export enum ATTRIBUTES {
-  STATE = "state"
+export enum Attributes {
+  State = "state"
 }
 
 // Switch entity commands
-export enum COMMANDS {
-  ON = "on",
-  OFF = "off",
-  TOGGLE = "toggle"
+export enum Commands {
+  On = "on",
+  Off = "off",
+  Toggle = "toggle"
 }
 
 // Switch entity device classes
-export enum DEVICECLASSES {
-  OUTLET = "outlet",
-  SWITCH = "switch"
+export enum DeviceClasses {
+  Outlet = "outlet",
+  Switch = "switch"
 }
 
 // Switch entity options
-export enum OPTIONS {
-  READABLE = "readable"
+export enum Options {
+  Readable = "readable"
 }
 
 // Define types for the parameters in the constructor
 interface SwitchParams {
   features?: string[];
-  attributes?: Partial<Record<ATTRIBUTES, STATES>>;
-  deviceClass?: DEVICECLASSES;
-  options?: Record<OPTIONS, boolean>;
+  attributes?: Partial<Record<Attributes, States>>;
+  deviceClass?: DeviceClasses;
+  options?: Record<Options, boolean>;
   area?: string;
   cmdHandler?: CommandHandler | null;
 }
@@ -76,7 +76,7 @@ export class Switch extends Entity {
     name: string | Map<string, string> | Record<string, string>,
     { features, attributes, deviceClass, options, area, cmdHandler }: SwitchParams = {}
   ) {
-    super(id, name, ENTITYTYPES.SWITCH, { features, attributes, deviceClass, options, area, cmdHandler });
+    super(id, name, EntityTypes.Switch, { features, attributes, deviceClass, options, area, cmdHandler });
 
     log.debug(`Switch entity created with id: ${this.id}`);
   }

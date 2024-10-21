@@ -7,7 +7,7 @@
  */
 "use strict";
 
-import { STATUS_CODES } from "../api_definitions.js";
+import { StatusCodes } from "../api_definitions.js";
 import { toLanguageObject } from "../utils.js";
 import log from "../loggers.js";
 import assert from "node:assert";
@@ -15,15 +15,15 @@ import assert from "node:assert";
 /**
  * Available entity types.
  */
-export enum TYPES {
-  COVER = "cover",
-  BUTTON = "button",
-  CLIMATE = "climate",
-  LIGHT = "light",
-  MEDIA_PLAYER = "media_player",
-  REMOTE = "remote",
-  SENSOR = "sensor",
-  SWITCH = "switch"
+export enum Types {
+  Cover = "cover",
+  Button = "button",
+  Climate = "climate",
+  Light = "light",
+  MediaPlayer = "media_player",
+  Remote = "remote",
+  Sensor = "sensor",
+  Switch = "switch"
 }
 
 export type CommandHandler = (
@@ -138,6 +138,6 @@ export class Entity {
 
     log.warn("No command handler for %s: cannot execute command '%s' %s", this.id, cmdId, params || "");
 
-    return STATUS_CODES.NOT_IMPLEMENTED.toString();
+    return StatusCodes.NotImplemented.toString();
   }
 }

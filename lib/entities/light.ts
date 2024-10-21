@@ -6,68 +6,68 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, TYPES as ENTITYTYPES } from "./entity.js";
+import { CommandHandler, Types as EntityTypes } from "./entity.js";
 import { Entity } from "./entity.js";
 import log from "../loggers.js";
 
 /**
  * Light entity states.
  */
-export enum STATES {
-  UNAVAILABLE = "UNAVAILABLE",
-  UNKNOWN = "UNKNOWN",
-  ON = "ON",
-  OFF = "OFF"
+export enum States {
+  Unavailable = "UNAVAILABLE",
+  Unknown = "UNKNOWN",
+  On = "ON",
+  Off = "OFF"
 }
 
 /**
  * Light entity features.
  */
-export enum FEATURES {
-  ON_OFF = "on_off",
-  TOGGLE = "toggle",
-  DIM = "dim",
-  COLOR = "color",
-  COLOR_TEMPERATURE = "color_temperature"
+export enum Features {
+  OnOff = "on_off",
+  Toggle = "toggle",
+  Dim = "dim",
+  Color = "color",
+  ColorTemperature = "color_temperature"
 }
 
 /**
  * Light entity attributes.
  */
-export enum ATTRIBUTES {
-  STATE = "state",
-  HUE = "hue",
-  SATURATION = "saturation",
-  BRIGHTNESS = "brightness",
-  COLOR_TEMPERATURE = "color_temperature"
+export enum Attributes {
+  State = "state",
+  Hue = "hue",
+  Saturation = "saturation",
+  Brightness = "brightness",
+  ColorTemperature = "color_temperature"
 }
 
 /**
  * Light entity commands.
  */
-export enum COMMANDS {
-  ON = "on",
-  OFF = "off",
-  TOGGLE = "toggle"
+export enum Commands {
+  On = "on",
+  Off = "off",
+  Toggle = "toggle"
 }
 
 /**
  * Light entity device classes.
  */
-export const DEVICECLASSES: Record<string, unknown> = {};
+export enum DeviceClasses {}
 
 /**
  * Light entity options.
  */
-export enum OPTIONS {
-  COLOR_TEMPERATURE_STEPS = "color_temperature_steps"
+export enum Options {
+  ColorTemperatureSteps = "color_temperature_steps"
 }
 
 interface LightParams {
   features?: string[];
-  attributes?: Partial<Record<ATTRIBUTES, STATES | number | boolean | string>>;
+  attributes?: Partial<Record<Attributes, States | number | boolean | string>>;
   deviceClass?: string;
-  options?: Partial<Record<OPTIONS, number | string | boolean>> | null;
+  options?: Partial<Record<Options, number | string | boolean>> | null;
   area?: string;
   cmdHandler?: CommandHandler | null;
 }
@@ -91,7 +91,7 @@ export class Light extends Entity {
     name: string | Map<string, string> | Record<string, string>,
     { features = [], attributes = {}, deviceClass, options = null, area }: LightParams = {}
   ) {
-    super(id, name, ENTITYTYPES.LIGHT, { features, attributes, deviceClass, options, area });
+    super(id, name, EntityTypes.Light, { features, attributes, deviceClass, options, area });
 
     log.debug(`Light entity created with id: ${this.id}`);
   }

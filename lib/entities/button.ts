@@ -6,29 +6,29 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, TYPES as ENTITYTYPES } from "./entity.js";
+import { CommandHandler, Types as EntityTypes } from "./entity.js";
 import { Entity } from "./entity.js";
 import log from "../loggers.js";
 
 // Button entity states
-export enum STATES {
-  UNAVAILABLE = "UNAVAILABLE",
-  AVAILABLE = "AVAILABLE"
+export enum States {
+  Unavailable = "UNAVAILABLE",
+  Available = "AVAILABLE"
 }
 
 // Button entity attributes
-export enum ATTRIBUTES {
-  STATE = "state"
+export enum Attributes {
+  State = "state"
 }
 
 // Button commands
-export enum COMMANDS {
-  PUSH = "push"
+export enum Commands {
+  Push = "push"
 }
 
 // Define types for the parameters in the constructor
 interface ButtonParams {
-  state?: STATES;
+  state?: States;
   area?: string;
   cmdHandler?: CommandHandler | null;
 }
@@ -53,11 +53,11 @@ export class Button extends Entity {
   constructor(
     id: string,
     name: string | Map<string, string> | Record<string, string>,
-    { state = STATES.AVAILABLE, area, cmdHandler }: ButtonParams = {}
+    { state = States.Available, area, cmdHandler }: ButtonParams = {}
   ) {
-    super(id, name, ENTITYTYPES.BUTTON, {
+    super(id, name, EntityTypes.Button, {
       features: ["press"],
-      attributes: new Map([[ATTRIBUTES.STATE, state as unknown as object]]),
+      attributes: new Map([[Attributes.State, state as unknown as object]]),
       area,
       cmdHandler
     });

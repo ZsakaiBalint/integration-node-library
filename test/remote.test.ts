@@ -1,5 +1,5 @@
 import test from "ava";
-import { createSequenceCmd, createSendCmd, FEATURES, STATES, ATTRIBUTES } from "../lib/entities/remote.js";
+import { createSequenceCmd, createSendCmd, Features, States, Attributes } from "../lib/entities/remote.js";
 import { EntityCommand } from "../lib/entities/ui.js";
 import { AssertionError } from "node:assert";
 import { Remote } from "../lib/entities/entities.js";
@@ -104,12 +104,12 @@ test("Remote constructor without parameter object creates default remote class",
 });
 
 test("Remote constructor with parameter object", (t) => {
-  const attributes: Partial<Record<ATTRIBUTES, STATES>> = {
-    [ATTRIBUTES.STATE]: STATES.ON
+  const attributes: Partial<Record<Attributes, States>> = {
+    [Attributes.State]: States.On
   };
 
   const remote = new Remote("test", "Test Remote", {
-    features: [FEATURES.SEND_CMD],
+    features: [Features.SendCmd],
     attributes,
     simpleCommands: ["foobar", "foo", "bar"],
     area: "Test lab"
@@ -129,7 +129,7 @@ test("Remote constructor with parameter object", (t) => {
 
 test("Remote constructor with Object attributes", (t) => {
   const entity = new Remote("test", "Test Remote", {
-    attributes: { state: STATES.UNAVAILABLE }
+    attributes: { state: States.Unavailable }
   });
 
   t.is(entity.id, "test");

@@ -5,7 +5,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { TYPES as ENTITYTYPES } from "./entity.js";
+import { Types as EntityTypes } from "./entity.js";
 import { EventEmitter } from "events";
 import { Entity } from "./entity.js";
 import type { CommandHandler } from "./entity.js";
@@ -17,7 +17,7 @@ import * as MediaPlayer from "./media_player.js";
 import { Remote } from "./remote.js";
 import { Sensor } from "./sensor.js";
 import { Switch } from "./switch.js";
-import { EVENTS } from "../api_definitions.js";
+import { Events } from "../api_definitions.js";
 import log from "../loggers.js";
 
 class Entities extends EventEmitter {
@@ -88,7 +88,7 @@ class Entities extends EventEmitter {
       }
     }
 
-    this.emit(EVENTS.ENTITY_ATTRIBUTES_UPDATED, id, this.storage[id].entity_type, attributes);
+    this.emit(Events.EntityAttributesUpdated, id, this.storage[id].entity_type, attributes);
 
     return true;
   }
@@ -136,6 +136,6 @@ class Entities extends EventEmitter {
   }
 }
 
-export { ENTITYTYPES, Entities, Entity, Button, Climate, Cover, Light, MediaPlayer, Remote, Sensor, Switch };
+export { EntityTypes, Entities, Entity, Button, Climate, Cover, Light, MediaPlayer, Remote, Sensor, Switch };
 
 export type { CommandHandler };

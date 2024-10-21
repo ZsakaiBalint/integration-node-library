@@ -13,7 +13,7 @@ import { WebSocketServer } from "ws";
 import { EventEmitter } from "events";
 
 import { toLanguageObject, getDefaultLanguageString } from "./lib/utils.js";
-import { DEVICE_STATES, EVENTS, STATUS_CODES, setup } from "./lib/api_definitions.js";
+import { DeviceStates, Events, StatusCodes, setup } from "./lib/api_definitions.js";
 
 import * as ui from "./lib/entities/ui.js";
 import * as api_definitions from "./lib/api_definitions.js";
@@ -39,7 +39,7 @@ class IntegrationAPI extends EventEmitter {
   private configDirPath: string;
   private driverPath: string;
   private driverInfo!: DriverInfo;
-  private state: api_definitions.DEVICE_STATES;
+  private state: api_definitions.DeviceStates;
   private server: WebSocket.Server;
   private clients: Map<WebSocket, any>;
   private setupHandler: any;
@@ -57,7 +57,7 @@ class IntegrationAPI extends EventEmitter {
     this.configDirPath = process.env.UC_CONFIG_HOME || process.env.HOME || "./";
 
     // set default state to connected
-    this.state = api_definitions.DEVICE_STATES.DISCONNECTED;
+    this.state = api_definitions.DeviceStates.Disconnected;
 
     this.clients = new Map();
 
@@ -67,7 +67,7 @@ class IntegrationAPI extends EventEmitter {
 
     // connect to update events for entity attributes
     this.configuredEntities.on(
-      api_definitions.EVENTS.ENTITY_ATTRIBUTES_UPDATED,
+      api_definitions.Events.EntityAttributesUpdated,
       async (entityId, entityType, attributes) => {
         const data = {
           entity_id: entityId,
@@ -75,11 +75,7 @@ class IntegrationAPI extends EventEmitter {
           attributes: attributes instanceof Map ? Object.fromEntries(attributes) : attributes
         };
 
-        await this.#broadcastEvent(
-          api_definitions.MSG_EVENTS.ENTITY_CHANGE,
-          data,
-          api_definitions.EVENT_CATEGORY.ENTITY
-        );
+        await this.#broadcastEvent(api_definitions.MsgEvents.EntityChange, data, api_definitions.EventCategory.Entity);
       }
     );
   }
@@ -254,7 +250,7 @@ class IntegrationAPI extends EventEmitter {
 
   // TODO return send result, connection.send error handling
   // send a response to a request
-  async #sendResponse(wsId: string, id: any, msg: any, msgData: any, statusCode = uc.STATUS_CODES.OK) {
+  async #sendResponse(wsId: string, id: any, msg: any, msgData: any, statusCode = uc.StatusCodes.Ok) {
     const json = {
       kind: "resp",
       req_id: id,
@@ -345,49 +341,49 @@ class IntegrationAPI extends EventEmitter {
 
     if (kind === "req") {
       switch (msg) {
-        case api_definitions.MESSAGES.GET_DRIVER_VERSION:
-          await this.#sendResponse(wsId, id, api_definitions.MSG_EVENTS.DRIVER_VERSION, this.getDriverVersion());
+        case api_definitions.Messages.GetDriverVersion:
+          await this.#sendResponse(wsId, id, api_definitions.MsgEvents.DriverVersion, this.getDriverVersion());
           break;
 
-        case api_definitions.MESSAGES.GET_DEVICE_STATE:
-          await this.#sendResponse(wsId, id, api_definitions.MSG_EVENTS.DEVICE_STATE, this.#getDeviceState());
+        case api_definitions.Messages.GetDeviceState:
+          await this.#sendResponse(wsId, id, api_definitions.MsgEvents.DeviceState, this.#getDeviceState());
           break;
 
-        case api_definitions.MESSAGES.GET_AVAILABLE_ENTITIES:
-          await this.#sendResponse(wsId, id, api_definitions.MSG_EVENTS.AVAILABLE_ENTITIES, {
+        case api_definitions.Messages.getAvailableEntities:
+          await this.#sendResponse(wsId, id, api_definitions.MsgEvents.AvailableEntities, {
             available_entities: this.#getAvailableEntities()
           });
           break;
 
-        case api_definitions.MESSAGES.GET_ENTITY_STATES:
-          await this.#sendResponse(wsId, id, api_definitions.MSG_EVENTS.ENTITY_STATES, this.#getEntityStates());
+        case api_definitions.Messages.GetEntityStates:
+          await this.#sendResponse(wsId, id, api_definitions.MsgEvents.EntityStates, this.#getEntityStates());
           break;
 
-        case api_definitions.MESSAGES.ENTITY_COMMAND:
+        case api_definitions.Messages.EntityCommand:
           await this.#entityCommand(wsId, id, msgData);
           break;
 
-        case api_definitions.MESSAGES.SUBSCRIBE_EVENTS:
+        case api_definitions.Messages.SubscribeEvents:
           await this.#subscribeEvents(msgData);
           await this.#sendOkResult(wsId, id);
           break;
 
-        case api_definitions.MESSAGES.UNSUBSCRIBE_EVENTS:
+        case api_definitions.Messages.UnsubscribeEvents:
           await this.#unSubscribeEvents(msgData);
           await this.#sendOkResult(wsId, id);
           break;
 
-        case api_definitions.MESSAGES.GET_DRIVER_METADATA:
-          await this.#sendResponse(wsId, id, api_definitions.MSG_EVENTS.DRIVER_METADATA, this.driverInfo);
+        case api_definitions.Messages.GetDriverMetadata:
+          await this.#sendResponse(wsId, id, api_definitions.MsgEvents.DriverMetadata, this.driverInfo);
           break;
 
-        case api_definitions.MESSAGES.SETUP_DRIVER:
+        case api_definitions.Messages.SetupDriver:
           if (!(await this.#setupDriver(wsId, id, msgData))) {
             await this.driverSetupError({ wsId, id });
           }
           break;
 
-        case api_definitions.MESSAGES.SET_DRIVER_USER_DATA:
+        case api_definitions.Messages.SetDriverUserData:
           if (!(await this.#setDriverUserData(wsId, id, msgData))) {
             await this.driverSetupError({ wsId, id });
           }
@@ -400,24 +396,24 @@ class IntegrationAPI extends EventEmitter {
       }
     } else if (kind === "event") {
       switch (msg) {
-        case api_definitions.MSG_EVENTS.CONNECT:
-          this.emit(api_definitions.EVENTS.CONNECT);
+        case api_definitions.MsgEvents.Connect:
+          this.emit(api_definitions.Events.Connect);
           break;
 
-        case api_definitions.MSG_EVENTS.DISCONNECT:
-          this.emit(api_definitions.EVENTS.DISCONNECT);
+        case api_definitions.MsgEvents.Disconnect:
+          this.emit(api_definitions.Events.Disconnect);
           break;
 
-        case api_definitions.MSG_EVENTS.ENTER_STANDBY:
-          this.emit(api_definitions.EVENTS.ENTER_STANDBY);
+        case api_definitions.MsgEvents.EnterStandby:
+          this.emit(api_definitions.Events.EnterStandby);
           break;
 
-        case api_definitions.MSG_EVENTS.EXIT_STANDBY:
-          this.emit(api_definitions.EVENTS.EXIT_STANDBY);
+        case api_definitions.MsgEvents.ExitStandby:
+          this.emit(api_definitions.Events.ExitStandby);
           break;
 
-        case api_definitions.MSG_EVENTS.ABORT_DRIVER_SETUP:
-          this.emit(api_definitions.EVENTS.SETUP_DRIVER_ABORT);
+        case api_definitions.MsgEvents.AbortDriverSetup:
+          this.emit(api_definitions.Events.SetupDriverAbort);
           break;
 
         default:
@@ -451,9 +447,9 @@ class IntegrationAPI extends EventEmitter {
     this.#sendResponse(
       wsId,
       0,
-      api_definitions.MESSAGES.AUTHENTICATION,
+      api_definitions.Messages.Authentication,
       {},
-      success ? api_definitions.STATUS_CODES.OK : api_definitions.STATUS_CODES.UNAUTHORIZED
+      success ? api_definitions.StatusCodes.Ok : api_definitions.StatusCodes.Unauthorized
     );
   }
 
@@ -478,7 +474,7 @@ class IntegrationAPI extends EventEmitter {
       }
     });
 
-    this.emit(api_definitions.EVENTS.SUBSCRIBE_ENTITIES, entities.entity_ids);
+    this.emit(api_definitions.Events.SubscribeEntities, entities.entity_ids);
   }
 
   async #unSubscribeEvents(entities: any) {
@@ -491,7 +487,7 @@ class IntegrationAPI extends EventEmitter {
       }
     });
 
-    this.emit(api_definitions.EVENTS.UNSUBSCRIBE_ENTITIES, entities.getEntityIds());
+    this.emit(api_definitions.Events.UnsubscribeEntities, entities.getEntityIds());
 
     return res;
   }
@@ -506,7 +502,7 @@ class IntegrationAPI extends EventEmitter {
 
     if (!data) {
       log.warn("Ignoring entity command: called with empty msg_data");
-      await this.acknowledgeCommand(wsHandle, api_definitions.STATUS_CODES.BAD_REQUEST);
+      await this.acknowledgeCommand(wsHandle, api_definitions.StatusCodes.BadRequest);
       return;
     }
 
@@ -514,14 +510,14 @@ class IntegrationAPI extends EventEmitter {
     const cmdId = data.cmd_id; // "cmd_id" in data ? data.cmd_id : undefined;
     if (!entityId || !cmdId) {
       log.warn("Ignoring command: missing entity_id or cmd_id");
-      await this.acknowledgeCommand(wsHandle, api_definitions.STATUS_CODES.BAD_REQUEST);
+      await this.acknowledgeCommand(wsHandle, api_definitions.StatusCodes.BadRequest);
       return;
     }
 
     const entity = this.configuredEntities.getEntity(entityId);
     if (!entity) {
       log.warn("Cannot execute command '%s' for '%s': no configured entity found", cmdId, entityId);
-      await this.acknowledgeCommand(wsHandle, api_definitions.STATUS_CODES.NOT_FOUND);
+      await this.acknowledgeCommand(wsHandle, api_definitions.StatusCodes.NotFound);
       return;
     }
 
@@ -531,7 +527,7 @@ class IntegrationAPI extends EventEmitter {
         `DEPRECATED no entity command handler provided for ${data.entity_id} by the driver: please migrate the integration driver, the legacy ENTITY_COMMAND event will be removed in a future release!`
       );
       this.emit(
-        api_definitions.EVENTS.ENTITY_COMMAND,
+        api_definitions.Events.EntityCommand,
         wsHandle,
         data.entity_id,
         data.entity_type,
@@ -562,7 +558,7 @@ class IntegrationAPI extends EventEmitter {
       log.warn(
         "DEPRECATED no setup handler provided by the driver: please migrate the integration driver, the legacy SETUP_DRIVER, SETUP_DRIVER_USER_DATA, SETUP_DRIVER_USER_CONFIRMATION events will be removed in a future release!"
       );
-      this.emit(api_definitions.EVENTS.SETUP_DRIVER, wsHandle, data.setup_data, reconfigure);
+      this.emit(api_definitions.Events.SetupDriver, wsHandle, data.setup_data, reconfigure);
       return true;
     }
 
@@ -620,10 +616,10 @@ class IntegrationAPI extends EventEmitter {
     // legacy: emit event, so the driver can act on it
     if (!this.setupHandler) {
       if (data.input_values) {
-        this.emit(api_definitions.EVENTS.SETUP_DRIVER_USER_DATA, wsHandle, data.input_values);
+        this.emit(api_definitions.Events.SetupDriverUserData, wsHandle, data.input_values);
         return true;
       } else if (data.confirm) {
-        this.emit(api_definitions.EVENTS.SETUP_DRIVER_USER_CONFIRMATION, wsHandle);
+        this.emit(api_definitions.Events.SetupDriverUserConfirmation, wsHandle);
         return true;
       } else {
         log.warn("Unsupported set_driver_user_data payload received");
@@ -685,11 +681,11 @@ class IntegrationAPI extends EventEmitter {
     this.state = state;
 
     await this.#broadcastEvent(
-      api_definitions.MSG_EVENTS.DEVICE_STATE,
+      api_definitions.MsgEvents.DeviceState,
       {
         state: this.state
       },
-      api_definitions.EVENT_CATEGORY.DEVICE
+      api_definitions.EventCategory.Device
     );
   }
 
@@ -699,7 +695,7 @@ class IntegrationAPI extends EventEmitter {
    * @param {Object} wsHandle The WebSocket handle received in the ENTITY_COMMAND event.
    * @param {Number} statusCode The status code. Defaults to OK 200.
    */
-  async acknowledgeCommand(wsHandle: { wsId: any; reqId: any }, statusCode = api_definitions.STATUS_CODES.OK) {
+  async acknowledgeCommand(wsHandle: { wsId: any; reqId: any }, statusCode = api_definitions.StatusCodes.Ok) {
     await this.#sendResponse(wsHandle.wsId, wsHandle.reqId, "result", {}, statusCode);
   }
 
@@ -715,9 +711,9 @@ class IntegrationAPI extends EventEmitter {
     };
     await this.#sendEvent(
       wsHandle.wsId,
-      api_definitions.MSG_EVENTS.DRIVER_SETUP_CHANGE,
+      api_definitions.MsgEvents.DriverSetupChange,
       msgData,
-      api_definitions.EVENT_CATEGORY.DEVICE
+      api_definitions.EventCategory.Device
     );
   }
 
@@ -751,9 +747,9 @@ class IntegrationAPI extends EventEmitter {
     };
     await this.#sendEvent(
       wsHandle.wsId,
-      api_definitions.MSG_EVENTS.DRIVER_SETUP_CHANGE,
+      api_definitions.MsgEvents.DriverSetupChange,
       msgData,
-      api_definitions.EVENT_CATEGORY.DEVICE
+      api_definitions.EventCategory.Device
     );
   }
 
@@ -781,9 +777,9 @@ class IntegrationAPI extends EventEmitter {
     };
     await this.#sendEvent(
       wsHandle.wsId,
-      api_definitions.MSG_EVENTS.DRIVER_SETUP_CHANGE,
+      api_definitions.MsgEvents.DriverSetupChange,
       msgData,
-      api_definitions.EVENT_CATEGORY.DEVICE
+      api_definitions.EventCategory.Device
     );
   }
 
@@ -801,9 +797,9 @@ class IntegrationAPI extends EventEmitter {
     };
     await this.#sendEvent(
       wsHandle,
-      api_definitions.MSG_EVENTS.DRIVER_SETUP_CHANGE,
+      api_definitions.MsgEvents.DriverSetupChange,
       msgData,
-      api_definitions.EVENT_CATEGORY.DEVICE
+      api_definitions.EventCategory.Device
     );
   }
 
@@ -823,9 +819,9 @@ class IntegrationAPI extends EventEmitter {
     };
     await this.#sendEvent(
       wsHandle.wsId,
-      api_definitions.MSG_EVENTS.DRIVER_SETUP_CHANGE,
+      api_definitions.MsgEvents.DriverSetupChange,
       msgData,
-      api_definitions.EVENT_CATEGORY.DEVICE
+      api_definitions.EventCategory.Device
     );
   }
 
@@ -862,24 +858,20 @@ function createDriverInfo(driverConfig: object): DriverInfo {
   throw new Error("Function not implemented.");
 }
 
-//export default new IntegrationAPI();
-//export { DEVICE_STATES, EVENTS, STATUS_CODES, Entities, setup, ui };
-
-// Combine the instance with additional exports using Object.assign
 const uc = Object.assign(new IntegrationAPI(), {
   IntegrationAPI,
-  DEVICE_STATES,
-  EVENTS,
-  STATUS_CODES,
+  DeviceStates,
+  Events,
+  StatusCodes,
   entities,
   setup,
   ui,
   api_definitions
 }) as IntegrationAPI & {
   IntegrationAPI: typeof IntegrationAPI;
-  DEVICE_STATES: typeof DEVICE_STATES;
-  EVENTS: typeof EVENTS;
-  STATUS_CODES: typeof STATUS_CODES;
+  DeviceStates: typeof DeviceStates;
+  Events: typeof Events;
+  StatusCodes: typeof StatusCodes;
   entities: typeof entities;
   setup: typeof setup;
   ui: typeof ui;

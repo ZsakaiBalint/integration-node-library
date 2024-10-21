@@ -8,28 +8,28 @@
 import assert from "node:assert";
 
 // Physical buttons
-export enum BUTTONS {
-  BACK = "BACK",
-  HOME = "HOME",
-  VOICE = "VOICE",
-  VOLUME_UP = "VOLUME_UP",
-  VOLUME_DOWN = "VOLUME_DOWN",
-  MUTE = "MUTE",
-  DPAD_UP = "DPAD_UP",
-  DPAD_DOWN = "DPAD_DOWN",
-  DPAD_LEFT = "DPAD_LEFT",
-  DPAD_RIGHT = "DPAD_RIGHT",
-  DPAD_MIDDLE = "DPAD_MIDDLE",
-  GREEN = "GREEN",
-  YELLOW = "YELLOW",
-  RED = "RED",
-  BLUE = "BLUE",
-  CHANNEL_UP = "CHANNEL_UP",
-  CHANNEL_DOWN = "CHANNEL_DOWN",
-  PREV = "PREV",
-  PLAY = "PLAY",
-  NEXT = "NEXT",
-  POWER = "POWER"
+export enum Buttons {
+  Back = "BACK",
+  Home = "HOME",
+  Voice = "VOICE",
+  VolumeUp = "VOLUME_UP",
+  VolumeDown = "VOLUME_DOWN",
+  Mute = "MUTE",
+  DpadUp = "DPAD_UP",
+  DpadDown = "DPAD_DOWN",
+  DpadLeft = "DPAD_LEFT",
+  DpadRight = "DPAD_RIGHT",
+  DpadMiddle = "DPAD_MIDDLE",
+  Green = "GREEN",
+  Yellow = "YELLOW",
+  Red = "RED",
+  Blue = "BLUE",
+  ChannelUp = "CHANNEL_UP",
+  ChannelDown = "CHANNEL_DOWN",
+  Prev = "PREV",
+  Play = "PLAY",
+  Next = "NEXT",
+  Power = "POWER"
 }
 
 // Remote command definition for a button mapping or UI page definition.
@@ -45,11 +45,11 @@ export class EntityCommand {
 
 // Physical button command mapping.
 export class DeviceButtonMapping {
-  button: BUTTONS;
+  button: Buttons;
   short_press?: EntityCommand;
   long_press?: EntityCommand;
 
-  constructor(button: BUTTONS, shortPress?: EntityCommand, longPress?: EntityCommand) {
+  constructor(button: Buttons, shortPress?: EntityCommand, longPress?: EntityCommand) {
     assert(
       shortPress === undefined || shortPress instanceof EntityCommand,
       "shortPress parameter must be an EntityCommand"
@@ -73,7 +73,7 @@ export class DeviceButtonMapping {
  * @throws AssertionError if shortPress or longPress arguments are of a wrong type.
  */
 export function createBtnMapping(
-  button: BUTTONS,
+  button: Buttons,
   short?: string | EntityCommand,
   long?: string | EntityCommand
 ): DeviceButtonMapping {
