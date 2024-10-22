@@ -6,7 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, Types as EntityTypes } from "./entity.js";
+import { CommandHandler, Types as EntityTypes, EntityName } from "./entity.js";
 import { DeviceButtonMapping, EntityCommand, UiPage } from "./ui.js";
 import { Entity } from "./entity.js";
 import log from "../loggers.js";
@@ -146,7 +146,7 @@ export class Remote extends Entity {
    */
   constructor(
     id: string,
-    name: string | Map<string, string> | Record<string, string>,
+    name: EntityName,
     { features = [], attributes = {}, simpleCommands, buttonMapping, uiPages, area, cmdHandler }: RemoteParams = {}
   ) {
     const options: OptionsInterface = {};

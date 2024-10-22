@@ -32,6 +32,8 @@ export type CommandHandler = (
   params?: Record<string, string | object | unknown>
 ) => Promise<string>;
 
+export type EntityName = string | Map<string, string> | Record<string, string>;
+
 interface EntityParams {
   features?: string[];
   attributes?:
@@ -47,7 +49,7 @@ interface EntityParams {
 
 export class Entity {
   public id: string;
-  public name: string | Record<string, string>;
+  public name: EntityName;
   public entity_type: string;
   public device_id: string | null;
   public features: string[];
@@ -67,7 +69,7 @@ export class Entity {
    */
   constructor(
     id: string,
-    name: string | Map<string, string> | Record<string, string>,
+    name: EntityName,
     entityType: string,
     { features = [], attributes = {}, deviceClass, options = null, area, cmdHandler = null }: EntityParams = {}
   ) {

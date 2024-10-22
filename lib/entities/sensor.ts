@@ -6,7 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { Types as EntityTypes } from "./entity.js";
+import { Types as EntityTypes, EntityName } from "./entity.js";
 import { Entity } from "./entity.js";
 import log from "../loggers.js";
 
@@ -79,11 +79,7 @@ export class Sensor extends Entity {
    * @param params Entity parameters.
    * @throws AssertionError if invalid parameters are specified.
    */
-  constructor(
-    id: string,
-    name: string | Map<string, string> | Record<string, string>,
-    { attributes, deviceClass, options, area }: SensorParams = {}
-  ) {
+  constructor(id: string, name: EntityName, { attributes, deviceClass, options, area }: SensorParams = {}) {
     super(id, name, EntityTypes.Sensor, { attributes, deviceClass, options, area });
 
     log.debug(`Sensor entity created with id: ${this.id}`);

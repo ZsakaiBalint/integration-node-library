@@ -6,7 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { Types as EntityTypes } from "./entity.js";
+import { Types as EntityTypes, EntityName } from "./entity.js";
 import { Entity } from "./entity.js";
 import log from "../loggers.js";
 
@@ -214,14 +214,14 @@ export class MediaPlayer extends Entity {
    * Constructs a new media-player entity.
    *
    * @param {string} id The entity identifier. Must be unique inside the integration driver.
-   * @param {string | Map<string, string> | Record<string, string>} name The human-readable name of the entity.
+   * @param {EntityName} name The human-readable name of the entity.
    *        Either a string, which will be mapped to English, or a Map / Object containing multiple language strings.
    * @param {MediaPlayerParams} [params] Entity parameters.
    * @throws AssertionError if invalid parameters are specified.
    */
   constructor(
     id: string,
-    name: string | Map<string, string> | Record<string, string>,
+    name: EntityName,
     { features, attributes, deviceClass, options, area, cmdHandler }: MediaPlayerParams = {}
   ) {
     let entityName: string | Map<string, string>;

@@ -6,7 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, Types as EntityTypes } from "./entity.js";
+import { CommandHandler, Types as EntityTypes, EntityName } from "./entity.js";
 import { Entity } from "./entity.js";
 import log from "../loggers.js";
 
@@ -45,16 +45,12 @@ export class Button extends Entity {
    * - STATES.AVAILABLE is set if no entity-state is provided.
    *
    * @param {string} id The entity identifier. Must be unique inside the integration driver.
-   * @param {string | Map<string, string> | Record<string, string>} name The human-readable name of the entity.
+   * @param {EntityName} name The human-readable name of the entity.
    *        Either a string, which will be mapped to English, or a Map / Object containing multiple language strings.
    * @param {ButtonParams} [params] Entity parameters.
    * @throws AssertionError if invalid parameters are specified.
    */
-  constructor(
-    id: string,
-    name: string | Map<string, string> | Record<string, string>,
-    { state = States.Available, area, cmdHandler }: ButtonParams = {}
-  ) {
+  constructor(id: string, name: EntityName, { state = States.Available, area, cmdHandler }: ButtonParams = {}) {
     super(id, name, EntityTypes.Button, {
       features: ["press"],
       attributes: new Map([[Attributes.State, state as unknown as object]]),
