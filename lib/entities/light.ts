@@ -6,8 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, Types as EntityTypes, EntityName } from "./entity.js";
-import { Entity } from "./entity.js";
+import { CommandHandler, Entity, EntityType } from "./entity.js";
 import log from "../loggers.js";
 
 /**
@@ -65,11 +64,11 @@ export enum Options {
 
 interface LightParams {
   features?: string[];
-  attributes?: Partial<Record<Attributes, States | number | boolean | string>>;
+  attributes?: { [key: string]: string | number | boolean };
   deviceClass?: string;
-  options?: Partial<Record<Options, number | string | boolean>> | null;
+  options?: { [key: string]: string | number | boolean | object };
   area?: string;
-  cmdHandler?: CommandHandler | null;
+  cmdHandler?: CommandHandler;
 }
 
 /**
@@ -88,10 +87,10 @@ export class Light extends Entity {
    */
   constructor(
     id: string,
-    name: EntityName,
-    { features = [], attributes = {}, deviceClass, options = null, area }: LightParams = {}
+    name: string | { [key: string]: string },
+    { features = [], attributes = {}, deviceClass, options, area }: LightParams = {}
   ) {
-    super(id, name, EntityTypes.Light, { features, attributes, deviceClass, options, area });
+    super(id, name, EntityType.Light, { features, attributes, deviceClass, options, area });
 
     log.debug(`Light entity created with id: ${this.id}`);
   }

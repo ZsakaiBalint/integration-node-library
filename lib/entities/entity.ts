@@ -5,7 +5,6 @@
  * @copyright (c) 2024 by Unfolded Circle ApS.
  * @license Apache License 2.0, see LICENSE for more details.
  */
-"use strict";
 
 import { StatusCodes } from "../api_definitions.js";
 import { toLanguageObject } from "../utils.js";
@@ -15,7 +14,7 @@ import assert from "node:assert";
 /**
  * Available entity types.
  */
-export enum Types {
+export enum EntityType {
   Cover = "cover",
   Button = "button",
   Climate = "climate",
@@ -29,35 +28,31 @@ export enum Types {
 export type CommandHandler = (
   entity: Entity,
   command: string,
-  params?: Record<string, string | object | unknown>
-) => Promise<string>;
+  params?: { [key: string]: string | number | boolean },
+) => StatusCodes;
 
-export type EntityName = string | Map<string, string> | Record<string, string>;
-
-interface EntityParams {
+export interface EntityParams {
   features?: string[];
-  attributes?:
-    | object
-    | Map<string, string | object>
-    | Record<string, object | undefined | string | number | boolean>
-    | null;
+  attributes?: { [key: string]: string | number | boolean };
   deviceClass?: string;
-  options?: Record<string, object | undefined | string | number | boolean> | null;
+  options?: { [key: string]: string | number | boolean | object };
   area?: string;
-  cmdHandler?: CommandHandler | null;
+  cmdHandler?: CommandHandler;
 }
 
 export class Entity {
   public id: string;
-  public name: EntityName;
-  public entity_type: string;
-  public device_id: string | null;
-  public features: string[];
-  public attributes: Record<string, object | string | number | undefined | boolean>;
+  public name: string | { [key: string]: string };
+  public entity_type: EntityType;
+
+  public device_id?: string;
+
+  public features?: string[];
+  public attributes?: { [key: string]: string | number | boolean };
   public device_class?: string;
-  public options: Record<string, object | undefined | string | number | boolean> | null;
+  public options?: { [key: string]: string | number | boolean | object };
   public area?: string;
-  private cmdHandler?: CommandHandler | null;
+  private cmdHandler?: CommandHandler;
 
   /**
    * Constructs a new entity.
@@ -69,44 +64,22 @@ export class Entity {
    */
   constructor(
     id: string,
-    name: EntityName,
-    entityType: string,
-    { features = [], attributes = {}, deviceClass, options = null, area, cmdHandler = null }: EntityParams = {}
+    name: string | { [key: string]: string },
+    entityType: EntityType,
+    { features, attributes, deviceClass, options, area, cmdHandler }: EntityParams = {}
   ) {
-    assert(typeof id === "string", "Entity parameter id must be a string");
     this.id = id;
 
     const languageName = toLanguageObject(name);
     assert(languageName);
     this.name = languageName || "?";
 
-    assert(typeof entityType === "string", "Entity parameter entityType must be a string");
     this.entity_type = entityType;
-    this.device_id = null; // not yet supported
-    assert(Array.isArray(features), "Entity parameter features must be an Array");
     this.features = features;
-    assert(
-      attributes instanceof Map || typeof attributes === "object",
-      "Entity parameter attributes must be a Map or Object"
-    );
-    /*
-    if (attributes instanceof Map) {
-      this.attributes = attributes;
-    } else {
-      this.attributes = new Map(Object.entries(attributes || {}));
-    }
-      */
-    this.attributes = attributes instanceof Map ? Object.fromEntries(attributes) : { ...attributes };
-    assert(
-      deviceClass === undefined || typeof deviceClass === "string",
-      "Entity parameter deviceClass must be a string"
-    );
+    this.attributes = attributes;
     this.device_class = deviceClass;
-    assert(options === null || typeof options === "object", "Entity parameter options must be an Object");
     this.options = options;
-    assert(area === undefined || typeof area === "string", "Entity parameter area must be a string");
     this.area = area;
-    assert(cmdHandler === null || typeof cmdHandler === "function", "Entity parameter cmdHandler must be a function");
     this.cmdHandler = cmdHandler;
   }
 
@@ -114,7 +87,7 @@ export class Entity {
    * Set callback handler for entity command requests.
    * @param cmdHandler Callback handler for entity commands.
    */
-  setCmdHandler(cmdHandler: CommandHandler | null) {
+  setCmdHandler(cmdHandler: CommandHandler) {
     this.cmdHandler = cmdHandler;
   }
 
@@ -122,7 +95,7 @@ export class Entity {
    * @return true if a callback handler for entity commands has been installed.
    */
   get hasCmdHandler(): boolean {
-    return this.cmdHandler !== undefined && this.cmdHandler !== null;
+    return this.cmdHandler !== undefined;
   }
 
   /**
@@ -133,13 +106,13 @@ export class Entity {
    * @param params optional command parameters
    * @return command status code to acknowledge to UC Remote
    */
-  async command(cmdId: string, params?: Record<string, string>): Promise<string> {
+  async command(cmdId: string, params?: { [key: string]: string | number | boolean }): Promise<StatusCodes> {
     if (this.cmdHandler) {
       return await this.cmdHandler(this, cmdId, params);
     }
 
     log.warn("No command handler for %s: cannot execute command '%s' %s", this.id, cmdId, params || "");
 
-    return StatusCodes.NotImplemented.toString();
+    return StatusCodes.NotImplemented;
   }
 }

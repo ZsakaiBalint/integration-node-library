@@ -6,9 +6,8 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, Types as EntityTypes, EntityName } from "./entity.js";
+import { CommandHandler, Entity, EntityType } from "./entity.js";
 import { DeviceButtonMapping, EntityCommand, UiPage } from "./ui.js";
-import { Entity } from "./entity.js";
 import log from "../loggers.js";
 import assert from "node:assert";
 
@@ -19,7 +18,7 @@ interface RemoteParams {
   buttonMapping?: Array<DeviceButtonMapping>;
   uiPages?: Array<UiPage>;
   area?: string;
-  cmdHandler?: CommandHandler | null;
+  cmdHandler?: CommandHandler;
 }
 
 /**
@@ -127,10 +126,10 @@ export function createSequenceCmd(
   return new EntityCommand(Commands.SendCmdSequence, params);
 }
 
-interface OptionsInterface extends Record<string, string[] | DeviceButtonMapping[] | { pages: UiPage[] } | undefined> {
-  [Options.SimpleCommands]?: string[];
-  [Options.ButtonMapping]?: DeviceButtonMapping[];
-  [Options.UserInterface]?: {
+interface OptionsInterface extends Record<string, string[] | DeviceButtonMapping[] | { pages: UiPage[] }> {
+  [Options.SimpleCommands]: string[];
+  [Options.ButtonMapping]: DeviceButtonMapping[];
+  [Options.UserInterface]: {
     pages: UiPage[];
   };
 }
@@ -146,10 +145,14 @@ export class Remote extends Entity {
    */
   constructor(
     id: string,
-    name: EntityName,
+    name: string | { [key: string]: string },
     { features = [], attributes = {}, simpleCommands, buttonMapping, uiPages, area, cmdHandler }: RemoteParams = {}
   ) {
-    const options: OptionsInterface = {};
+    const options: OptionsInterface = {
+      [Options.SimpleCommands]: [],
+      [Options.ButtonMapping]: [],
+      [Options.UserInterface]: { pages: [] }
+    };
     if (simpleCommands) {
       options[Options.SimpleCommands] = simpleCommands;
     }
@@ -160,7 +163,7 @@ export class Remote extends Entity {
       options[Options.UserInterface] = { pages: uiPages };
     }
 
-    super(id, name, EntityTypes.Remote, { features, attributes, options, area, cmdHandler });
+    super(id, name, EntityType.Remote, { features, attributes, options, area, cmdHandler });
 
     log.debug(`Remote entity created with id: ${this.id}`);
   }

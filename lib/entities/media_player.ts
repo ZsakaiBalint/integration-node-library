@@ -6,8 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { Types as EntityTypes, EntityName } from "./entity.js";
-import { Entity } from "./entity.js";
+import { Entity, EntityType, CommandHandler } from "./entity.js";
 import log from "../loggers.js";
 
 /**
@@ -193,15 +192,15 @@ export enum RepeatMode {
   One = "ONE"
 }
 
-export type CmdHandler = (entity: Entity, command: string, options?: Record<string, unknown>) => Promise<string>;
+//export type CmdHandler = (entity: Entity, command: string, options?: Record<string, unknown>) => Promise<string>;
 
 interface MediaPlayerParams {
   features?: string[];
-  attributes?: Partial<Record<Attributes, States | number | boolean | string[] | string>>;
+  attributes?: { [key: string]: string | number | boolean };
   deviceClass?: string;
-  options?: Partial<Record<Options, number | boolean>> | null;
+  options?: { [key: string]: string | number | boolean | object };
   area?: string;
-  cmdHandler?: CmdHandler;
+  cmdHandler?: CommandHandler;
 }
 
 /**
@@ -214,26 +213,17 @@ export class MediaPlayer extends Entity {
    * Constructs a new media-player entity.
    *
    * @param {string} id The entity identifier. Must be unique inside the integration driver.
-   * @param {EntityName} name The human-readable name of the entity.
+   * @param name The human-readable name of the entity.
    *        Either a string, which will be mapped to English, or a Map / Object containing multiple language strings.
    * @param {MediaPlayerParams} [params] Entity parameters.
    * @throws AssertionError if invalid parameters are specified.
    */
   constructor(
     id: string,
-    name: EntityName,
+    name: string | { [key: string]: string },
     { features, attributes, deviceClass, options, area, cmdHandler }: MediaPlayerParams = {}
   ) {
-    let entityName: string | Map<string, string>;
-    if (typeof name === "string") {
-      entityName = name;
-    } else if (name instanceof Map) {
-      entityName = name;
-    } else {
-      entityName = new Map<string, string>(Object.entries(name));
-    }
-
-    super(id, entityName, EntityTypes.MediaPlayer, { features, attributes, deviceClass, options, area, cmdHandler });
+    super(id, name, EntityType.MediaPlayer, { features, attributes, deviceClass, options, area, cmdHandler });
 
     log.debug(`MediaPlayer entity created with id: ${this.id}`);
   }

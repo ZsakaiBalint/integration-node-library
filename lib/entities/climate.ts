@@ -6,8 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, Types as EntityTypes, EntityName } from "./entity.js";
-import { Entity } from "./entity.js";
+import { CommandHandler, Entity, EntityType } from "./entity.js";
 import log from "../loggers.js";
 
 // Climate entity states
@@ -68,11 +67,11 @@ export enum Options {
 // Define types for the parameters in the constructor
 interface ClimateParams {
   features?: string[];
-  attributes?: Map<Attributes, States> | object;
+  attributes?: { [key: string]: string | number | boolean };
   deviceClass?: string;
-  options?: Partial<Record<Options, string>> | null;
+  options?: { [key: string]: string | number | boolean | object };
   area?: string;
-  cmdHandler?: CommandHandler | null;
+  cmdHandler?: CommandHandler;
 }
 
 export class Climate extends Entity {
@@ -87,10 +86,10 @@ export class Climate extends Entity {
    */
   constructor(
     id: string,
-    name: EntityName,
-    { features = [], attributes = {}, deviceClass, options = null, area, cmdHandler }: ClimateParams = {}
+    name: string | { [key: string]: string },
+    { features = [], attributes = {}, deviceClass, options, area, cmdHandler }: ClimateParams = {}
   ) {
-    super(id, name, EntityTypes.Climate, { features, attributes, deviceClass, options, area, cmdHandler });
+    super(id, name, EntityType.Climate, { features, attributes, deviceClass, options, area, cmdHandler });
 
     log.debug(`Climate entity created with id: ${this.id}`);
   }

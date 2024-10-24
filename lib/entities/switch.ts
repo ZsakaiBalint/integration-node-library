@@ -6,8 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, Types as EntityTypes, EntityName } from "./entity.js";
-import { Entity } from "./entity.js";
+import { CommandHandler, Entity, EntityType } from "./entity.js";
 import log from "../loggers.js";
 
 // Switch entity states
@@ -54,7 +53,7 @@ interface SwitchParams {
   deviceClass?: DeviceClasses;
   options?: Record<Options, boolean>;
   area?: string;
-  cmdHandler?: CommandHandler | null;
+  cmdHandler?: CommandHandler;
 }
 
 /**
@@ -73,10 +72,10 @@ export class Switch extends Entity {
    */
   constructor(
     id: string,
-    name: EntityName,
+    name: string | { [key: string]: string },
     { features, attributes, deviceClass, options, area, cmdHandler }: SwitchParams = {}
   ) {
-    super(id, name, EntityTypes.Switch, { features, attributes, deviceClass, options, area, cmdHandler });
+    super(id, name, EntityType.Switch, { features, attributes, deviceClass, options, area, cmdHandler });
 
     log.debug(`Switch entity created with id: ${this.id}`);
   }
