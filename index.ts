@@ -849,7 +849,7 @@ class IntegrationAPI extends EventEmitter {
     this.configuredEntities.clear();
   }
 
-  public updateEntityAttributes(entityId: string, attributes: Map<string, any> | Record<string, any>): boolean {
+  public updateEntityAttributes(entityId: string, attributes: { [key: string]: string | number | boolean }): boolean {
     return this.configuredEntities.updateEntityAttributes(entityId, attributes);
   }
 }

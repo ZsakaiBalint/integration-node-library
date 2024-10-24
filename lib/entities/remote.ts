@@ -149,20 +149,11 @@ export class Remote extends Entity {
     { features = [], attributes = {}, simpleCommands, buttonMapping, uiPages, area, cmdHandler }: RemoteParams = {}
   ) {
     const options: OptionsInterface = {
-      [Options.SimpleCommands]: [],
-      [Options.ButtonMapping]: [],
-      [Options.UserInterface]: { pages: [] }
-    };
-    if (simpleCommands) {
-      options[Options.SimpleCommands] = simpleCommands;
+      [Options.SimpleCommands]: simpleCommands ?? [],
+      [Options.ButtonMapping]: buttonMapping ?? [],
+      [Options.UserInterface]: { pages: uiPages  ?? [] },
     }
-    if (buttonMapping) {
-      options[Options.ButtonMapping] = buttonMapping;
-    }
-    if (uiPages) {
-      options[Options.UserInterface] = { pages: uiPages };
-    }
-
+    
     super(id, name, EntityType.Remote, { features, attributes, options, area, cmdHandler });
 
     log.debug(`Remote entity created with id: ${this.id}`);

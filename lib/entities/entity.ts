@@ -66,7 +66,7 @@ export class Entity {
     id: string,
     name: string | { [key: string]: string },
     entityType: EntityType,
-    { features, attributes, deviceClass, options, area, cmdHandler }: EntityParams = {}
+    { features = [], attributes = {}, deviceClass, options, area, cmdHandler }: EntityParams = {}
   ) {
     this.id = id;
 

@@ -1,4 +1,5 @@
 import test from "ava";
+import { EntityType } from "../lib/entities/entity.js";
 import { Sensor, Options, States, Attributes, DeviceClasses } from "../lib/entities/sensor.js";
 
 test("Sensor constructor without parameter object creates default Sensor class", (t) => {
@@ -6,12 +7,12 @@ test("Sensor constructor without parameter object creates default Sensor class",
 
   t.is(entity.id, "test");
   t.deepEqual(entity.name, { en: "Test Sensor" });
-  t.is(entity.entity_type, "sensor");
-  t.is(entity.device_id, null);
+  t.is(entity.entity_type, EntityType.Sensor);
+  t.is(entity.device_id, undefined);
   t.deepEqual(entity.features, []);
   t.deepEqual(entity.attributes, {});
   t.is(entity.device_class, undefined);
-  t.is(entity.options, null);
+  t.is(entity.options, undefined);
   t.is(entity.area, undefined);
   t.is(entity.hasCmdHandler, false);
 });
@@ -34,8 +35,8 @@ test("Sensor constructor with parameter object", (t) => {
 
   t.is(entity.id, "test");
   t.deepEqual(entity.name, { en: "Test Sensor" });
-  t.is(entity.entity_type, "sensor");
-  t.is(entity.device_id, null);
+  t.is(entity.entity_type, EntityType.Sensor);
+  t.is(entity.device_id, undefined);
   t.deepEqual(entity.features, []);
   t.deepEqual(entity.attributes, { state: "UNAVAILABLE" });
   t.is(entity.device_class, "energy");
@@ -57,6 +58,6 @@ test("Sensor constructor with Object attributes", (t) => {
 
   t.is(entity.id, "test");
   t.deepEqual(entity.name, { en: "Test Sensor" });
-  t.is(entity.entity_type, "sensor");
+  t.is(entity.entity_type, EntityType.Sensor);
   t.deepEqual(entity.attributes, { state: "ON", value: 100, unit: "%" });
 });

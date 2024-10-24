@@ -3,6 +3,7 @@ import { createSequenceCmd, createSendCmd, Features, States, Attributes } from "
 import { EntityCommand } from "../lib/entities/ui.js";
 import { AssertionError } from "node:assert";
 import { Remote } from "../lib/entities/entities.js";
+import { EntityType } from "../lib/entities/entities.js";
 
 test("createSequenceCmd with an undefined sequence throws an assert", (t) => {
   t.throws(
@@ -93,12 +94,12 @@ test("Remote constructor without parameter object creates default remote class",
 
   t.is(remote.id, "test");
   t.deepEqual(remote.name, { en: "Test Remote" });
-  t.is(remote.entity_type, "remote");
-  t.is(remote.device_id, null);
+  t.is(remote.entity_type, EntityType.Remote);
+  t.is(remote.device_id, undefined);
   t.deepEqual(remote.features, []);
   t.deepEqual(remote.attributes, {});
   t.is(remote.device_class, undefined);
-  t.deepEqual(remote.options, {});
+  t.deepEqual(remote.options, {}); //
   t.is(remote.area, undefined);
   t.is(remote.hasCmdHandler, false);
 });
@@ -117,12 +118,12 @@ test("Remote constructor with parameter object", (t) => {
 
   t.is(remote.id, "test");
   t.deepEqual(remote.name, { en: "Test Remote" });
-  t.is(remote.entity_type, "remote");
-  t.is(remote.device_id, null);
+  t.is(remote.entity_type, EntityType.Remote);
+  t.is(remote.device_id, undefined);
   t.deepEqual(remote.features, ["send_cmd"]);
   t.deepEqual(remote.attributes, { state: "ON" });
   t.is(remote.device_class, undefined);
-  t.deepEqual(remote.options, { simple_commands: ["foobar", "foo", "bar"] });
+  t.deepEqual(remote.options, { simple_commands: ["foobar", "foo", "bar"] }); //
   t.is(remote.area, "Test lab");
   t.is(remote.hasCmdHandler, false);
 });
@@ -134,6 +135,6 @@ test("Remote constructor with Object attributes", (t) => {
 
   t.is(entity.id, "test");
   t.deepEqual(entity.name, { en: "Test Remote" });
-  t.is(entity.entity_type, "remote");
+  t.is(entity.entity_type, EntityType.Remote);
   t.deepEqual(entity.attributes, { state: "UNAVAILABLE" });
 });
