@@ -5,22 +5,23 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { TYPES as ENTITYTYPES } from "./entity.js";
+import { EntityType } from "./entity.js";
 import { EventEmitter } from "events";
-import Entity from "./entity.js";
-import Button from "./button.js";
-import Climate from "./climate.js";
-import Cover from "./cover.js";
-import Light from "./light.js";
-import MediaPlayer from "./media_player.js";
-import Remote from "./remote.js";
-import Sensor from "./sensor.js";
-import Switch from "./switch.js";
-import { EVENTS } from "../api_definitions.js";
+import { Entity } from "./entity.js";
+import type { CommandHandler } from "./entity.js";
+import * as Button from "./button.js";
+import { Climate } from "./climate.js";
+import { Cover } from "./cover.js";
+import * as Light from "./light.js";
+import * as MediaPlayer from "./media_player.js";
+import { Remote } from "./remote.js";
+import { Sensor } from "./sensor.js";
+import { Switch } from "./switch.js";
+import { Events } from "../api_definitions.js";
 import log from "../loggers.js";
 
 class Entities extends EventEmitter {
-  private storage: Record<string, Entity>;
+  private storage: { [key: string]: Entity };
 
   constructor(public id: string) {
     super();
@@ -71,23 +72,19 @@ class Entities extends EventEmitter {
    */
   updateEntityAttributes(
     id: string,
-    attributes: Map<string, object | number | string> | Record<string, object | number | string>
+    attributes: { [key: string]: string | number | boolean },
   ): boolean {
     if (!this.contains(id)) {
       return false;
     }
 
-    if (attributes instanceof Map) {
-      attributes.forEach((value, key) => {
-        this.storage[id].attributes[key] = value;
-      });
-    } else {
+    if (this.storage[id] && this.storage[id].attributes) {
       for (const key in attributes) {
         this.storage[id].attributes[key] = attributes[key];
       }
     }
 
-    this.emit(EVENTS.ENTITY_ATTRIBUTES_UPDATED, id, this.storage[id].entity_type, attributes);
+    this.emit(Events.EntityAttributesUpdated, id, this.storage[id].entity_type, attributes);
 
     return true;
   }
@@ -135,6 +132,6 @@ class Entities extends EventEmitter {
   }
 }
 
-export default Entities;
-export const TYPES = ENTITYTYPES;
-export { Entity, Button, Climate, Cover, Light, MediaPlayer, Remote, Sensor, Switch };
+export { EntityType, Entities, Entity, Button, Climate, Cover, Light, MediaPlayer, Remote, Sensor, Switch };
+
+export type { CommandHandler };

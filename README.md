@@ -1,4 +1,5 @@
 # Node.js API wrapper for the UC Integration API
+
 [![License](https://img.shields.io/github/license/unfoldedcircle/integration-node-library.svg)](LICENSE)
 
 This library simplifies writing Node.js based integrations for the [Unfolded Circle Remote devices](https://www.unfoldedcircle.com/)
@@ -12,6 +13,7 @@ Not supported:
 - Token based authentication
 
 Requirements:
+
 - Install [nvm](https://github.com/nvm-sh/nvm) (Node.js version manager) for local development
 - Node.js v16.18.0 or newer (older versions are not tested)
   - Development dependencies require at least v18.18
@@ -35,6 +37,7 @@ A specific Git hash can be added to pin the version:
 ```shell
 npm install https://github.com/unfoldedcircle/integration-node-library#$HASH
 ```
+
 See npm documentation for all options.
 
 ### Environment Variables
@@ -42,7 +45,7 @@ See npm documentation for all options.
 Certain features can be configured by environment variables:
 
 | Variable                 | Values           | Description                                                                                                          |
-|--------------------------|------------------|----------------------------------------------------------------------------------------------------------------------|
+| ------------------------ | ---------------- | -------------------------------------------------------------------------------------------------------------------- |
 | UC_CONFIG_HOME           | _directory path_ | Configuration directory to save the user configuration from the driver setup.<br>Default: $HOME or current directory |
 | UC_INTEGRATION_INTERFACE | _address_        | Listening interface for WebSocket server.<br>Default: `0.0.0.0`                                                      |
 | UC_INTEGRATION_HTTP_PORT | _number_         | WebSocket listening port.<br>Default: `port` field in driver metadata json file, if not specified: `9090`            |
@@ -75,7 +78,7 @@ If you only want to get errors and warnings reported:
 DEBUG=ucapi:warn,ucapi:error node driver.js
 ```
 
-Combine those settings with your existing application if any of your other modules or libs also uses __debug__
+Combine those settings with your existing application if any of your other modules or libs also uses **debug**
 
 ## Versioning
 

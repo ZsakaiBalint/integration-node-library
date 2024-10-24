@@ -6,88 +6,88 @@
  */
 
 // Define device states
-enum DEVICE_STATES {
-  CONNECTED = "CONNECTED",
-  CONNECTING = "CONNECTING",
-  DISCONNECTED = "DISCONNECTED",
-  ERROR = "ERROR"
+export enum DeviceStates {
+  Connected = "CONNECTED",
+  Connecting = "CONNECTING",
+  Disconnected = "DISCONNECTED",
+  Error = "ERROR"
 }
 
 // Define status codes
-enum STATUS_CODES {
-  OK = 200,
-  BAD_REQUEST = 400,
-  UNAUTHORIZED = 401,
-  NOT_FOUND = 404,
-  TIMEOUT = 408,
-  CONFLICT = 409,
-  SERVER_ERROR = 500,
-  NOT_IMPLEMENTED = 501,
-  SERVICE_UNAVAILABLE = 503
+export enum StatusCodes {
+  Ok = 200,
+  BadRequest = 400,
+  Unauthorized = 401,
+  NotFound = 404,
+  Timeout = 408,
+  Conflict = 409,
+  ServerError = 500,
+  NotImplemented = 501,
+  ServiceUnavailable = 503
 }
 
 // Define request/response messages
-enum MESSAGES {
-  AUTHENTICATION = "authentication",
-  GET_DRIVER_VERSION = "get_driver_version",
-  GET_DEVICE_STATE = "get_device_state",
-  GET_AVAILABLE_ENTITIES = "get_available_entities",
-  GET_ENTITY_STATES = "get_entity_states",
-  SUBSCRIBE_EVENTS = "subscribe_events",
-  UNSUBSCRIBE_EVENTS = "unsubscribe_events",
-  ENTITY_COMMAND = "entity_command",
-  GET_DRIVER_METADATA = "get_driver_metadata",
-  SETUP_DRIVER = "setup_driver",
-  SET_DRIVER_USER_DATA = "set_driver_user_data"
+export enum Messages {
+  Authentication = "authentication",
+  GetDriverVersion = "get_driver_version",
+  GetDeviceState = "get_device_state",
+  getAvailableEntities = "get_available_entities",
+  GetEntityStates = "get_entity_states",
+  SubscribeEvents = "subscribe_events",
+  UnsubscribeEvents = "unsubscribe_events",
+  EntityCommand = "entity_command",
+  GetDriverMetadata = "get_driver_metadata",
+  SetupDriver = "setup_driver",
+  SetDriverUserData = "set_driver_user_data"
 }
 
 // Define event messages
-enum MSG_EVENTS {
-  CONNECT = "connect",
-  DISCONNECT = "disconnect",
-  ENTER_STANDBY = "enter_standby",
-  EXIT_STANDBY = "exit_standby",
-  DRIVER_VERSION = "driver_version",
-  DEVICE_STATE = "device_state",
-  AVAILABLE_ENTITIES = "available_entities",
-  ENTITY_STATES = "entity_states",
-  ENTITY_CHANGE = "entity_change",
-  DRIVER_METADATA = "driver_metadata",
-  DRIVER_SETUP_CHANGE = "driver_setup_change",
-  ABORT_DRIVER_SETUP = "abort_driver_setup"
+export enum MsgEvents {
+  Connect = "connect",
+  Disconnect = "disconnect",
+  EnterStandby = "enter_standby",
+  ExitStandby = "exit_standby",
+  DriverVersion = "driver_version",
+  DeviceState = "device_state",
+  AvailableEntities = "available_entities",
+  EntityStates = "entity_states",
+  EntityChange = "entity_change",
+  DriverMetadata = "driver_metadata",
+  DriverSetupChange = "driver_setup_change",
+  AbortDriverSetup = "abort_driver_setup"
 }
 
-enum EVENTS {
-  ENTITY_COMMAND = "entity_command",
-  ENTITY_ATTRIBUTES_UPDATED = "entity_attributes_updated",
-  SUBSCRIBE_ENTITIES = "subscribe_entities",
-  UNSUBSCRIBE_ENTITIES = "unsubscribe_entities",
-  SETUP_DRIVER = "setup_driver",
-  SETUP_DRIVER_USER_DATA = "setup_driver_user_data",
-  SETUP_DRIVER_USER_CONFIRMATION = "setup_driver_user_confirmation",
-  SETUP_DRIVER_ABORT = "setup_driver_abort",
-  CONNECT = "connect",
-  DISCONNECT = "disconnect",
-  ENTER_STANDBY = "enter_standby",
-  EXIT_STANDBY = "exit_standby"
+export enum Events {
+  EntityCommand = "entity_command",
+  EntityAttributesUpdated = "entity_attributes_updated",
+  SubscribeEntities = "subscribe_entities",
+  UnsubscribeEntities = "unsubscribe_entities",
+  SetupDriver = "setup_driver",
+  SetupDriverUserData = "setup_driver_user_data",
+  SetupDriverUserConfirmation = "setup_driver_user_confirmation",
+  SetupDriverAbort = "setup_driver_abort",
+  Connect = "connect",
+  Disconnect = "disconnect",
+  EnterStandby = "enter_standby",
+  ExitStandby = "exit_standby"
 }
 
 // Define event categories
-enum EVENT_CATEGORY {
-  DEVICE = "DEVICE",
-  ENTITY = "ENTITY"
+export enum EventCategory {
+  Device = "DEVICE",
+  Entity = "ENTITY"
 }
 
 /**
  * More detailed error reason for `state: ERROR` condition.
  */
-enum INTEGRATION_SETUP_ERROR {
-  NONE = "NONE",
-  NOT_FOUND = "NOT_FOUND",
-  CONNECTION_REFUSED = "CONNECTION_REFUSED",
-  AUTHORIZATION_ERROR = "AUTHORIZATION_ERROR",
-  TIMEOUT = "TIMEOUT",
-  OTHER = "OTHER"
+export enum IntegrationSetupError {
+  None = "NONE",
+  NotFound = "NOT_FOUND",
+  ConnectionRefused = "CONNECTION_REFUSED",
+  AuthorizationError = "AUTHORIZATION_ERROR",
+  Timeout = "TIMEOUT",
+  Other = "OTHER"
 }
 
 /**
@@ -227,7 +227,7 @@ class RequestUserConfirmation extends SetupAction {
 class SetupError extends SetupAction {
   errorType: string;
 
-  constructor(errorType: string = INTEGRATION_SETUP_ERROR.OTHER) {
+  constructor(errorType: string = IntegrationSetupError.Other) {
     super();
     this.errorType = errorType;
   }
@@ -241,6 +241,7 @@ class SetupComplete extends SetupAction {
 }
 
 export const setup = {
+  IntegrationSetupError,
   SetupDriver,
   DriverSetupRequest,
   UserDataResponse,
@@ -251,17 +252,4 @@ export const setup = {
   RequestUserConfirmation,
   SetupError,
   SetupComplete
-};
-
-export {
-  DEVICE_STATES,
-  STATUS_CODES,
-  MESSAGES,
-  MSG_EVENTS,
-  EVENTS,
-  EVENT_CATEGORY,
-  INTEGRATION_SETUP_ERROR,
-  DriverSetupRequest,
-  UserDataResponse,
-  SetupAction
 };
