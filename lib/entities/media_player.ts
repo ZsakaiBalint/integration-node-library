@@ -196,7 +196,7 @@ export enum RepeatMode {
 
 interface MediaPlayerParams {
   features?: string[];
-  attributes?: { [key: string]: string | number | boolean };
+  attributes?: { [key: string]: string | string[] | number | boolean };
   deviceClass?: string;
   options?: { [key: string]: string | number | boolean | object };
   area?: string;

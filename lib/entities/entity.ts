@@ -33,7 +33,7 @@ export type CommandHandler = (
 
 export interface EntityParams {
   features?: string[];
-  attributes?: { [key: string]: string | number | boolean };
+  attributes?: { [key: string]: string | string[] | number | boolean };
   deviceClass?: string;
   options?: { [key: string]: string | number | boolean | object };
   area?: string;
@@ -48,7 +48,7 @@ export class Entity {
   public device_id?: string;
 
   public features?: string[];
-  public attributes?: { [key: string]: string | number | boolean };
+  public attributes?: { [key: string]: string | string[] | number | boolean };
   public device_class?: string;
   public options?: { [key: string]: string | number | boolean | object };
   public area?: string;

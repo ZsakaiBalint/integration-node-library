@@ -1,6 +1,6 @@
 // use package in production
 // const uc = require("uc-integration-api");
-import uc from "../index.js";
+import uc, { CommandHandler, StatusCodes } from "../index.js";
 
 uc.init("driver.json");
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

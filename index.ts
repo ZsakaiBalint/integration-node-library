@@ -14,6 +14,7 @@ import { EventEmitter } from "events";
 
 import { toLanguageObject, getDefaultLanguageString } from "./lib/utils.js";
 import { DeviceStates, Events, StatusCodes, setup } from "./lib/api_definitions.js";
+import type { CommandHandler } from "./lib/entities/entity.js"
 
 import * as ui from "./lib/entities/ui.js";
 import * as api_definitions from "./lib/api_definitions.js";
@@ -864,7 +865,7 @@ const uc = Object.assign(new IntegrationAPI(), {
   entities,
   setup,
   ui,
-  api_definitions
+  api_definitions,
 }) as IntegrationAPI & {
   IntegrationAPI: typeof IntegrationAPI;
   DeviceStates: typeof DeviceStates;
@@ -877,3 +878,4 @@ const uc = Object.assign(new IntegrationAPI(), {
 };
 
 export default uc;
+export type { CommandHandler, StatusCodes };

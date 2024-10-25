@@ -8,8 +8,7 @@
 import { EntityType } from "./entity.js";
 import { EventEmitter } from "events";
 import { Entity } from "./entity.js";
-import type { CommandHandler } from "./entity.js";
-import { Button } from "./button.js";                   //OK
+import { Button } from "./button.js";
 import { Climate } from "./climate.js";
 import { Cover } from "./cover.js";
 import { Light }from "./light.js";
@@ -132,4 +131,4 @@ class Entities extends EventEmitter {
   }
 }
 
-export { EntityType, Entities, Entity, Button, Climate, Cover, Light, MediaPlayer, Remote, Sensor, Switch, CommandHandler };
+export { EntityType, Entities, Entity, Button, Climate, Cover, Light, MediaPlayer, Remote, Sensor, Switch };
