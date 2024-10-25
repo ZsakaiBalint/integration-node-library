@@ -544,7 +544,7 @@ class IntegrationAPI extends EventEmitter {
     }
   }
 
-  async #setupDriver(wsId: any, reqId: any, data: { setup_data: { [key: string]: string }; reconfigure: any }) {
+  async #setupDriver(wsId: any, reqId: any, data: { setup_data: { [key: string]: string }; reconfigure: boolean }) {
     const wsHandle = { wsId, reqId };
 
     if (this.setupHandler) {
@@ -555,7 +555,7 @@ class IntegrationAPI extends EventEmitter {
       log.error("Aborting setup_driver: called with empty msg_data");
       return false;
     }
-    const reconfigure = data.reconfigure && typeof data.reconfigure === "boolean" ? data.reconfigure : false;
+    const reconfigure = data.reconfigure ? data.reconfigure : false;
 
     // legacy: emit event, so the driver can act on it
     if (!this.setupHandler) {

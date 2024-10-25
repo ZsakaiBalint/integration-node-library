@@ -6,7 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, Entity, EntityType } from "./entity.js";
+import { CommandHandler, Entity, EntityType, EntityName } from "./entity.js";
 import log from "../loggers.js";
 
 /**
@@ -63,10 +63,10 @@ export enum Options {
 }
 
 interface LightParams {
-  features?: string[];
-  attributes?: { [key: string]: string | number | boolean };
+  features?: Features[];
+  attributes?: Partial<Record<Attributes, States | number>>;
   deviceClass?: string;
-  options?: { [key: string]: string | number | boolean | object };
+  options?: Partial<Record<Options, number>>;
   area?: string;
   cmdHandler?: CommandHandler;
 }
@@ -92,11 +92,7 @@ export class Light extends Entity {
    * @param {LightParams} [params] Entity parameters.
    * @throws AssertionError if invalid parameters are specified.
    */
-  constructor(
-    id: string,
-    name: string | { [key: string]: string },
-    { features = [], attributes = {}, deviceClass, options, area }: LightParams = {}
-  ) {
+  constructor(id: string, name: EntityName, { features, attributes, deviceClass, options, area }: LightParams = {}) {
     super(id, name, EntityType.Light, { features, attributes, deviceClass, options, area });
 
     log.debug(`Light entity created with id: ${this.id}`);

@@ -152,7 +152,7 @@ const createUi = () => {
 
 const entity = new uc.entities.Remote("remote1", "Demo remote", {
   features: [uc.entities.Remote.Features.OnOff, uc.entities.Remote.Features.Toggle],
-  attributes: { [uc.entities.MediaPlayer.Attributes.State]: uc.entities.MediaPlayer.States.Off },
+  attributes: { [uc.entities.Remote.Attributes.State]: uc.entities.Remote.States.Off },
   simpleCommands: supportedCommands,
   buttonMapping: createButtonMappings(),
   uiPages: createUi(),

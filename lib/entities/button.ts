@@ -6,7 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, Entity, EntityType } from "./entity.js";
+import { CommandHandler, Entity, EntityType, EntityName } from "./entity.js";
 import log from "../loggers.js";
 
 export enum States {
@@ -49,11 +49,7 @@ export class Button extends Entity {
    * @param {ButtonParams} [params] Entity parameters.
    * @throws AssertionError if invalid parameters are specified.
    */
-  constructor(
-    id: string,
-    name: string | { [key: string]: string },
-    { state = States.Available, area, cmdHandler }: ButtonParams = {}
-  ) {
+  constructor(id: string, name: EntityName, { state = States.Available, area, cmdHandler }: ButtonParams = {}) {
     super(id, name, EntityType.Button, {
       features: ["press"],
       attributes: {

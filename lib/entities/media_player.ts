@@ -6,7 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { Entity, EntityType, CommandHandler } from "./entity.js";
+import { Entity, EntityType, CommandHandler, EntityName } from "./entity.js";
 import log from "../loggers.js";
 
 /**
@@ -195,10 +195,10 @@ export enum RepeatMode {
 //export type CmdHandler = (entity: Entity, command: string, options?: Record<string, unknown>) => Promise<string>;
 
 interface MediaPlayerParams {
-  features?: string[];
-  attributes?: { [key: string]: string | string[] | number | boolean };
-  deviceClass?: string;
-  options?: { [key: string]: string | number | boolean | object };
+  features?: Features[];
+  attributes?: Partial<Record<Attributes, States | RepeatMode | string | string[] | number | boolean>>;
+  deviceClass?: DeviceClasses;
+  options?: Partial<Record<Options, string[] | number>>;
   area?: string;
   cmdHandler?: CommandHandler;
 }
@@ -229,7 +229,7 @@ export class MediaPlayer extends Entity {
    */
   constructor(
     id: string,
-    name: string | { [key: string]: string },
+    name: EntityName,
     { features, attributes, deviceClass, options, area, cmdHandler }: MediaPlayerParams = {}
   ) {
     super(id, name, EntityType.MediaPlayer, { features, attributes, deviceClass, options, area, cmdHandler });

@@ -6,7 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, Entity, EntityType } from "./entity.js";
+import { CommandHandler, Entity, EntityType, EntityName } from "./entity.js";
 import log from "../loggers.js";
 
 // Switch entity states
@@ -48,8 +48,8 @@ export enum Options {
 
 // Define types for the parameters in the constructor
 interface SwitchParams {
-  features?: string[];
-  attributes?: Partial<Record<Attributes, States>>;
+  features?: Features[];
+  attributes?: Record<Attributes, States>;
   deviceClass?: DeviceClasses;
   options?: Record<Options, boolean>;
   area?: string;
@@ -79,7 +79,7 @@ export class Switch extends Entity {
    */
   constructor(
     id: string,
-    name: string | { [key: string]: string },
+    name: EntityName,
     { features, attributes, deviceClass, options, area, cmdHandler }: SwitchParams = {}
   ) {
     super(id, name, EntityType.Switch, { features, attributes, deviceClass, options, area, cmdHandler });

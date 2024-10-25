@@ -6,7 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, Entity, EntityType } from "./entity.js";
+import { CommandHandler, Entity, EntityType, EntityName } from "./entity.js";
 import log from "../loggers.js";
 
 // Climate entity states
@@ -64,12 +64,17 @@ export enum Options {
   FanModes = "fan_modes"
 }
 
+export enum TemperatureUnit {
+  Celsius = "CELSIUS",
+  Fahrenheit = "FAHRENHEIT"
+}
+
 // Define types for the parameters in the constructor
 interface ClimateParams {
-  features?: string[];
-  attributes?: { [key: string]: string | number | boolean };
+  features?: Features[];
+  attributes?: Partial<Record<Attributes, States | number>>;
   deviceClass?: string;
-  options?: { [key: string]: string | number | boolean | object };
+  options?: Partial<Record<Options, TemperatureUnit | number>>;
   area?: string;
   cmdHandler?: CommandHandler;
 }
@@ -93,8 +98,8 @@ export class Climate extends Entity {
    */
   constructor(
     id: string,
-    name: string | { [key: string]: string },
-    { features = [], attributes = {}, deviceClass, options, area, cmdHandler }: ClimateParams = {}
+    name: EntityName,
+    { features, attributes, deviceClass, options, area, cmdHandler }: ClimateParams = {}
   ) {
     super(id, name, EntityType.Climate, { features, attributes, deviceClass, options, area, cmdHandler });
 

@@ -6,7 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, Entity, EntityType } from "./entity.js";
+import { CommandHandler, Entity, EntityType, EntityName } from "./entity.js";
 import { DeviceButtonMapping, EntityCommand, UiPage } from "./ui.js";
 import log from "../loggers.js";
 import assert from "node:assert";
@@ -71,16 +71,16 @@ export function createSendCmd(
   command: string | undefined,
   { delay, repeat, hold }: { delay?: number; repeat?: number; hold?: number } = {}
 ): EntityCommand {
-  assert(command && typeof command === "string" && command.length > 0, "command must be a string and may not be empty");
+  assert(command && command.length > 0, "command must be a string and may not be empty");
 
   const params: Record<string, string | number> = { command };
-  if (typeof delay === "number") {
+  if (delay) {
     params.delay = delay;
   }
-  if (typeof repeat === "number") {
+  if (repeat) {
     params.repeat = repeat;
   }
-  if (typeof hold === "number") {
+  if (hold) {
     params.hold = hold;
   }
 
@@ -117,8 +117,8 @@ export function createSequenceCmd(
 }
 
 interface RemoteParams {
-  features?: string[];
-  attributes?: { [key: string]: string | string[] | number | boolean };
+  features?: Features[];
+  attributes?: Partial<Record<Attributes, States>>;
   simpleCommands?: string[];
   buttonMapping?: DeviceButtonMapping[];
   uiPages?: UiPage[];
@@ -143,8 +143,8 @@ export class Remote extends Entity {
    */
   constructor(
     id: string,
-    name: string | { [key: string]: string },
-    { features = [], attributes = {}, simpleCommands, buttonMapping, uiPages, area, cmdHandler }: RemoteParams = {}
+    name: EntityName,
+    { features, attributes, simpleCommands, buttonMapping, uiPages, area, cmdHandler }: RemoteParams = {}
   ) {
     const options: { [key: string]: string | number | boolean | object } = {};
     if (simpleCommands) {

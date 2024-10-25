@@ -6,7 +6,7 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import { CommandHandler, Entity, EntityType } from "./entity.js";
+import { CommandHandler, Entity, EntityType, EntityName } from "./entity.js";
 import log from "../loggers.js";
 
 // Cover entity states
@@ -65,10 +65,10 @@ export enum Options {}
 
 // Define types for the parameters in the constructor
 interface CoverParams {
-  features?: string[];
-  attributes?: { [key: string]: string | number | boolean };
-  deviceClass?: string;
-  options?: { [key: string]: string | number | boolean | object };
+  features?: Features[];
+  attributes?: Partial<Record<Attributes, States | number>>;
+  deviceClass?: DeviceClasses;
+  options?: { [key: string]: string };
   area?: string;
   cmdHandler?: CommandHandler;
 }
@@ -92,8 +92,8 @@ export class Cover extends Entity {
    */
   constructor(
     id: string,
-    name: string | { [key: string]: string },
-    { features = [], attributes = {}, deviceClass, options, area, cmdHandler }: CoverParams = {}
+    name: EntityName,
+    { features, attributes, deviceClass, options, area, cmdHandler }: CoverParams = {}
   ) {
     super(id, name, EntityType.Cover, { features, attributes, deviceClass, options, area, cmdHandler });
 

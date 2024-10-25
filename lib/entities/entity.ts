@@ -25,6 +25,8 @@ export enum EntityType {
   Switch = "switch"
 }
 
+export type EntityName = string | { [key: string]: string };
+
 export type CommandHandler = (
   entity: Entity,
   command: string,
@@ -42,7 +44,7 @@ export interface EntityParams {
 
 export class Entity {
   public id: string;
-  public name: string | { [key: string]: string };
+  public name: EntityName;
   public entity_type: EntityType;
 
   public device_id?: string;
