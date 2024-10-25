@@ -11,16 +11,6 @@ import { DeviceButtonMapping, EntityCommand, UiPage } from "./ui.js";
 import log from "../loggers.js";
 import assert from "node:assert";
 
-interface RemoteParams {
-  features?: string[];
-  attributes?: Partial<Record<Attributes, States>>;
-  simpleCommands?: string[];
-  buttonMapping?: Array<DeviceButtonMapping>;
-  uiPages?: Array<UiPage>;
-  area?: string;
-  cmdHandler?: CommandHandler;
-}
-
 /**
  * Remote entity states.
  */
@@ -124,6 +114,16 @@ export function createSequenceCmd(
   }
 
   return new EntityCommand(Commands.SendCmdSequence, params);
+}
+
+interface RemoteParams {
+  features?: string[];
+  attributes?: { [key: string]: string | string[] | number | boolean };
+  simpleCommands?: string[];
+  buttonMapping?: DeviceButtonMapping[];
+  uiPages?: UiPage[];
+  area?: string;
+  cmdHandler?: CommandHandler;
 }
 
 export class Remote extends Entity {

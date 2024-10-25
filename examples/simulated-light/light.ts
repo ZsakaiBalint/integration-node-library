@@ -50,20 +50,20 @@ const sharedCmdHandler: CommandHandler = async function (entity, cmdId, params):
     // trigger a light command
     const lightEntity = uc.getConfiguredEntities().getEntity("my_unique_light_id");
     if (lightEntity) {
-      await lightCmdHandler(lightEntity, uc.entities.Light.Commands.Toggle);
+      await lightCmdHandler(lightEntity, uc.entities.Light.Commands.Toggle, undefined);
     }
-    return uc.StatusCodes.Ok ?? "OK";
+    return uc.StatusCodes.Ok;
   }
 
   if (entity.id === "test_mediaplayer") {
     console.log("Got %s media-player command request: %s", entity.id, cmdId, params || "");
 
-    return uc.StatusCodes.Ok ?? "OK";
+    return uc.StatusCodes.Ok;
   }
 
   console.log("Got %s command request: %s", entity.id, cmdId);
 
-  return uc.StatusCodes.Ok ?? "OK";
+  return uc.StatusCodes.Ok;
 };
 
 /**
@@ -121,12 +121,12 @@ const lightCmdHandler: CommandHandler = async function (entity, cmdId, params): 
         entity.id,
         {
           [uc.entities.Light.Attributes.State]: uc.entities.Light.States.Off,
-          [uc.entities.Light.Attributes.Brightness]: params && params.brightness ? params.brightness : 0
+          [uc.entities.Light.Attributes.Brightness]: 0
         }
       );
       break;
     default:
-      return uc.StatusCodes.NotImplemented ?? "NOT_IMPLEMENTED";
+      return uc.StatusCodes.NotImplemented;
   }
 
   return uc.StatusCodes.Ok;
@@ -147,7 +147,7 @@ const lightEntity = new uc.entities.Light("my_unique_light_id", name, {
     [uc.entities.Light.Attributes.Brightness]: 0,
   }
 });
-lightEntity.setCmdHandler(lightCmdHandler ?? null);
+lightEntity.setCmdHandler(lightCmdHandler);
 
 // add entity as available
 // this is important, so the core knows what entities are available

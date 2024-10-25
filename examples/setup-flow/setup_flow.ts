@@ -4,14 +4,7 @@
 
 // use package in production
 // const uc = require("uc-integration-api");
-import uc from "../../index.js";
-import Button from "../../lib/entities/button.js";
-import { STATUS_CODES } from "http";
-import { DEVICE_STATES, EVENTS as API_EVENTS, setup } from "../../lib/api_definitions.js";
-import { Entity } from "../../lib/entities/entities.js";
-
-const { SetupError, RequestUserInput, SetupComplete } = setup;
-import { DriverSetupRequest, UserDataResponse, SetupAction } from "../../lib/api_definitions.js";
+import uc, { StatusCodes, CommandHandler } from "../../index.js";
 
 /**
  * Dispatch driver setup requests to corresponding handlers.
@@ -21,11 +14,11 @@ import { DriverSetupRequest, UserDataResponse, SetupAction } from "../../lib/api
  *                 UserDataResponse or UserConfirmationResponse
  * @return {Promise<uc.setup.SetupAction>} the setup action on how to continue
  */
-async function driverSetupHandler(msg: DriverSetupRequest | UserDataResponse): Promise<SetupAction> {
-  if (msg instanceof DriverSetupRequest) {
+async function driverSetupHandler(msg: typeof uc.setup.DriverSetupRequest) {
+  if (msg instanceof uc.setup.DriverSetupRequest) {
     return await handleDriverSetup(msg);
   }
-  if (msg instanceof UserDataResponse) {
+  if (msg instanceof uc.setup.UserDataResponse) {
     return await handleUserDataResponse(msg);
   }
 
@@ -34,7 +27,7 @@ async function driverSetupHandler(msg: DriverSetupRequest | UserDataResponse): P
   //     return handle_user_confirmation(msg)
   // }
 
-  return new SetupError();
+  return new uc.setup.SetupError();
 }
 
 /**
@@ -44,7 +37,7 @@ async function driverSetupHandler(msg: DriverSetupRequest | UserDataResponse): P
  * @param {uc.setup.DriverSetupRequest} msg value(s) of input fields in the first setup screen.
  * @return {Promise<uc.setup.SetupAction>} the setup action on how to continue
  */
-async function handleDriverSetup(msg: DriverSetupRequest): Promise<SetupAction> {
+async function handleDriverSetup(msg: typeof uc.setup.DriverSetupRequest) {
   // No support for reconfiguration :-)
   if (msg.reconfigure) {
     console.log("Ignoring driver reconfiguration request");
@@ -59,9 +52,9 @@ async function handleDriverSetup(msg: DriverSetupRequest): Promise<SetupAction> 
   // please note that all values are returned as strings!
   if (!("expert" in msg.setupData) || msg.setupData.expert !== "true") {
     // add a single button as default action
-    const button = new Button("button", "Button", { cmdHandler });
+    const button = new uc.entities.Button("button", "Button", { cmdHandler });
     uc.addEntity(button);
-    return new SetupComplete();
+    return new uc.setup.SetupComplete();
   }
 
   // Dropdown selections are usually set dynamically, e.g. with found devices etc.
@@ -71,7 +64,7 @@ async function handleDriverSetup(msg: DriverSetupRequest): Promise<SetupAction> 
     { id: "blue", label: { en: "Blue", de: "Blau" } }
   ];
 
-  return new RequestUserInput({ en: "Please choose", de: "Bitte auswählen" }, [
+  return new uc.setup.RequestUserInput({ en: "Please choose", de: "Bitte auswählen" }, [
     {
       id: "info",
       label: { en: "Setup flow example", de: "Setup Flow Beispiel" },
@@ -105,20 +98,20 @@ async function handleDriverSetup(msg: DriverSetupRequest): Promise<SetupAction> 
  * @param {uc.setup.UserDataResponse} msg response data from the requested user data
  * @return {Promise<uc.setup.SetupAction>} the setup action on how to continue: SetupComplete if finished.
  */
-async function handleUserDataResponse(msg: UserDataResponse): Promise<SetupAction> {
+async function handleUserDataResponse(msg: typeof uc.setup.UserDataResponse): Promise<typeof uc.setup.SetupAction> {
   // values from all screens are returned: check in reverse order
   if ("step2.count" in msg.inputValues) {
     for (let x = 0; x < parseInt(msg.inputValues["step2.count"]); x++) {
-      uc.addEntity(new Button(`button${x}`, `Button ${x + 1}`, { cmdHandler }));
+      uc.addEntity(new uc.entities.Button(`button${x}`, `Button ${x + 1}`, { cmdHandler }));
     }
 
-    return new SetupComplete();
+    return new uc.setup.SetupComplete();
   }
 
   if ("step1.choice" in msg.inputValues) {
     const choice = msg.inputValues["step1.choice"];
     console.log("Chosen color:", choice);
-    return new RequestUserInput({ en: "Step 2" }, [
+    return new uc.setup.RequestUserInput({ en: "Step 2" }, [
       {
         id: "info",
         label: {
@@ -145,7 +138,7 @@ async function handleUserDataResponse(msg: UserDataResponse): Promise<SetupActio
   }
 
   console.log("No choice was received");
-  return new SetupError();
+  return new uc.setup.SetupError();
 }
 
 /**
@@ -158,15 +151,15 @@ async function handleUserDataResponse(msg: UserDataResponse): Promise<SetupActio
  * @param {Object<string, *>} _params optional command parameters (not used for buttons)
  * @return {Promise<string>} status of the command
  */
-async function cmdHandler(entity: Entity, cmdId: string): Promise<string> {
+const cmdHandler: CommandHandler = async function (entity, cmdId, _params): Promise<StatusCodes> {
   console.log("Got %s command request: %s", entity.id, cmdId);
 
-  return STATUS_CODES.OK ?? "OK";
+  return uc.StatusCodes.Ok;
 }
 
-uc.on(API_EVENTS.CONNECT, async () => {
+uc.on(uc.Events.Connect, async () => {
   // When the remote connects, we just set the device state. We are ready all the time!
-  await uc.setDeviceState(DEVICE_STATES.CONNECTED);
+  await uc.setDeviceState(uc.DeviceStates.Connected);
 });
 
 uc.init("setup_flow.json", driverSetupHandler);
