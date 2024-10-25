@@ -75,7 +75,6 @@ interface ClimateParams {
 }
 
 export class Climate extends Entity {
-
   static States = States;
   static Features = Features;
   static Attributes = Attributes;

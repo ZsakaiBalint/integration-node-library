@@ -127,7 +127,6 @@ interface RemoteParams {
 }
 
 export class Remote extends Entity {
-
   static States = States;
   static Features = Features;
   static Attributes = Attributes;
@@ -148,7 +147,7 @@ export class Remote extends Entity {
     { features = [], attributes = {}, simpleCommands, buttonMapping, uiPages, area, cmdHandler }: RemoteParams = {}
   ) {
     const options: { [key: string]: string | number | boolean | object } = {};
-    if(simpleCommands) {
+    if (simpleCommands) {
       options[Options.SimpleCommands] = simpleCommands;
     }
     if (buttonMapping) {
@@ -157,7 +156,7 @@ export class Remote extends Entity {
     if (uiPages) {
       options[Options.UserInterface] = { pages: uiPages };
     }
-    
+
     super(id, name, EntityType.Remote, { features, attributes, options, area, cmdHandler });
 
     log.debug(`Remote entity created with id: ${this.id}`);

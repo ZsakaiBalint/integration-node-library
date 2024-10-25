@@ -76,7 +76,6 @@ interface LightParams {
  * for more information.
  */
 export class Light extends Entity {
-
   static States = States;
   static Features = Features;
   static Attributes = Attributes;

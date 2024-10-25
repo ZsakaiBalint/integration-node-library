@@ -61,7 +61,6 @@ interface SwitchParams {
  * for more information.
  */
 export class Switch extends Entity {
-
   static States = States;
   static Features = Features;
   static Attributes = Attributes;

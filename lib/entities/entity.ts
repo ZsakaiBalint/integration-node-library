@@ -28,7 +28,7 @@ export enum EntityType {
 export type CommandHandler = (
   entity: Entity,
   command: string,
-  params?: { [key: string]: string | number | boolean },
+  params?: { [key: string]: string | number | boolean }
 ) => Promise<StatusCodes>;
 
 export interface EntityParams {

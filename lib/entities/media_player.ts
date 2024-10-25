@@ -209,7 +209,6 @@ interface MediaPlayerParams {
  */
 
 export class MediaPlayer extends Entity {
-
   static States = States;
   static Features = Features;
   static Attributes = Attributes;

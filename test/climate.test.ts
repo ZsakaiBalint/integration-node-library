@@ -25,7 +25,7 @@ test("Climate constructor with parameter object", (t) => {
   const entity = new Climate("test", "Test Climate", {
     features: [Features.Cool],
     attributes: {
-      [Attributes.State] : States.Unavailable,
+      [Attributes.State]: States.Unavailable
     },
     options,
     area: "Test lab"

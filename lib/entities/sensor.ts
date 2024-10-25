@@ -70,7 +70,6 @@ interface SensorParams {
 }
 
 export class Sensor extends Entity {
-
   static States = States;
   static Features = Features;
   static Attributes = Attributes;
@@ -87,8 +86,8 @@ export class Sensor extends Entity {
    * @throws AssertionError if invalid parameters are specified.
    */
   constructor(
-    id: string, 
-    name: string | { [key: string]: string }, 
+    id: string,
+    name: string | { [key: string]: string },
     { attributes, deviceClass, options, area }: SensorParams = {}
   ) {
     super(id, name, EntityType.Sensor, { attributes, deviceClass, options, area });

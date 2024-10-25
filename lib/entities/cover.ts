@@ -74,7 +74,6 @@ interface CoverParams {
 }
 
 export class Cover extends Entity {
-
   static States = States;
   static Features = Features;
   static Attributes = Attributes;

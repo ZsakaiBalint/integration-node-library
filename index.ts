@@ -13,8 +13,15 @@ import { WebSocketServer } from "ws";
 import { EventEmitter } from "events";
 
 import { toLanguageObject, getDefaultLanguageString } from "./lib/utils.js";
-import { DeviceStates, Events, StatusCodes, setup } from "./lib/api_definitions.js";
-import type { CommandHandler } from "./lib/entities/entity.js"
+import setup, {
+  DeviceStates,
+  Events,
+  StatusCodes,
+  DriverSetupRequest,
+  UserDataResponse,
+  SetupAction
+} from "./lib/api_definitions.js";
+import type { CommandHandler } from "./lib/entities/entity.js";
 
 import * as ui from "./lib/entities/ui.js";
 import * as api_definitions from "./lib/api_definitions.js";
@@ -86,9 +93,7 @@ class IntegrationAPI extends EventEmitter {
    */
   init(
     driverConfig: string | object,
-    setupHandler?: (
-      msg: typeof uc.setup.DriverSetupRequest | typeof uc.setup.UserDataResponse
-    ) => Promise<typeof uc.setup.SetupAction>
+    setupHandler?: (msg: DriverSetupRequest | UserDataResponse) => Promise<SetupAction>
   ) {
     this.setupHandler = setupHandler;
     const integrationInterface = process.env.UC_INTEGRATION_INTERFACE;
@@ -564,9 +569,7 @@ class IntegrationAPI extends EventEmitter {
     // new setupHandler logic as in Python integration library
     let result = false;
     try {
-      const action = await this.setupHandler(
-        new api_definitions.DriverSetupRequest(reconfigure, data.setup_data)
-      );
+      const action = await this.setupHandler(new api_definitions.DriverSetupRequest(reconfigure, data.setup_data));
 
       if (action instanceof api_definitions.RequestUserInput) {
         await this.driverSetupProgress(wsHandle);
@@ -865,7 +868,7 @@ const uc = Object.assign(new IntegrationAPI(), {
   entities,
   setup,
   ui,
-  api_definitions,
+  api_definitions
 }) as IntegrationAPI & {
   IntegrationAPI: typeof IntegrationAPI;
   DeviceStates: typeof DeviceStates;
@@ -878,4 +881,4 @@ const uc = Object.assign(new IntegrationAPI(), {
 };
 
 export default uc;
-export type { CommandHandler, StatusCodes };
+export type { CommandHandler, StatusCodes, DriverSetupRequest, UserDataResponse, SetupAction };

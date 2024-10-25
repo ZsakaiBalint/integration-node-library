@@ -251,7 +251,7 @@ const setup = {
   RequestUserInput,
   RequestUserConfirmation,
   SetupError,
-  SetupComplete,
+  SetupComplete
 };
 
 export default setup;

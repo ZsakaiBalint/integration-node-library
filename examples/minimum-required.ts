@@ -108,18 +108,12 @@ const attributes = {};
 uc.updateEntityAttributes(entityId, attributes);
 
 // for example to update a state fo a media player:
-uc.updateEntityAttributes(
-  entityId, 
-  {
-    [uc.entities.MediaPlayer.Attributes.State] : uc.entities.MediaPlayer.States.Playing,
-  }
-);
+uc.updateEntityAttributes(entityId, {
+  [uc.entities.MediaPlayer.Attributes.State]: uc.entities.MediaPlayer.States.Playing
+});
 
 // or multiple attributes at the same time
-uc.updateEntityAttributes(
-  entityId,
-  {
-    [uc.entities.MediaPlayer.Attributes.State] : uc.entities.MediaPlayer.States.Playing,
-    [uc.entities.MediaPlayer.Attributes.MediaArtist] : "Massive Attack",
-  }
-);
+uc.updateEntityAttributes(entityId, {
+  [uc.entities.MediaPlayer.Attributes.State]: uc.entities.MediaPlayer.States.Playing,
+  [uc.entities.MediaPlayer.Attributes.MediaArtist]: "Massive Attack"
+});

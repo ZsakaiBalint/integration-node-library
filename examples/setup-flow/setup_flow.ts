@@ -4,7 +4,7 @@
 
 // use package in production
 // const uc = require("uc-integration-api");
-import uc, { StatusCodes, CommandHandler } from "../../index.js";
+import uc, { StatusCodes, CommandHandler, DriverSetupRequest, UserDataResponse, SetupAction } from "../../index.js";
 
 /**
  * Dispatch driver setup requests to corresponding handlers.
@@ -12,15 +12,15 @@ import uc, { StatusCodes, CommandHandler } from "../../index.js";
  * Either start the setup process or handle the provided user input data.
  * @param {uc.setup.SetupDriver} msg the setup driver request object, either DriverSetupRequest,
  *                 UserDataResponse or UserConfirmationResponse
- * @return {Promise<uc.setup.SetupAction>} the setup action on how to continue
+ * @return {Promise<SetupAction>} the setup action on how to continue
  */
 
-const driverSetupHandler = async function(msg: typeof uc.setup.DriverSetupRequest | typeof uc.setup.UserDataResponse) {
+const driverSetupHandler = async function (msg: DriverSetupRequest | UserDataResponse): Promise<SetupAction> {
   if (msg instanceof uc.setup.DriverSetupRequest) {
-    return await handleDriverSetup(msg as typeof uc.setup.DriverSetupRequest);
+    return await handleDriverSetup(msg);
   }
   if (msg instanceof uc.setup.UserDataResponse) {
-    return await handleUserDataResponse(msg as typeof uc.setup.UserDataResponse);
+    return await handleUserDataResponse(msg);
   }
 
   // user confirmation not used in our demo setup process
@@ -29,7 +29,7 @@ const driverSetupHandler = async function(msg: typeof uc.setup.DriverSetupReques
   // }
 
   return new uc.setup.SetupError();
-}
+};
 
 /**
  * Start driver setup.
@@ -38,8 +38,8 @@ const driverSetupHandler = async function(msg: typeof uc.setup.DriverSetupReques
  * @param {uc.setup.DriverSetupRequest} msg value(s) of input fields in the first setup screen.
  * @return {Promise<uc.setup.SetupAction>} the setup action on how to continue
  */
-async function handleDriverSetup(msg: typeof uc.setup.DriverSetupRequest) {
-  // No support for reconfiguration :-)but 
+async function handleDriverSetup(msg: DriverSetupRequest) {
+  // No support for reconfiguration :-)but
   if (msg.reconfigure) {
     console.log("Ignoring driver reconfiguration request");
   }
@@ -99,7 +99,7 @@ async function handleDriverSetup(msg: typeof uc.setup.DriverSetupRequest) {
  * @param {uc.setup.UserDataResponse} msg response data from the requested user data
  * @return {Promise<uc.setup.SetupAction>} the setup action on how to continue: SetupComplete if finished.
  */
-async function handleUserDataResponse(msg: typeof uc.setup.UserDataResponse): Promise<typeof uc.setup.SetupAction> {
+async function handleUserDataResponse(msg: UserDataResponse): Promise<SetupAction> {
   // values from all screens are returned: check in reverse order
   if ("step2.count" in msg.inputValues) {
     for (let x = 0; x < parseInt(msg.inputValues["step2.count"]); x++) {
@@ -156,7 +156,7 @@ const cmdHandler: CommandHandler = async function (entity, cmdId, _params): Prom
   console.log("Got %s command request: %s", entity.id, cmdId);
 
   return uc.StatusCodes.Ok;
-}
+};
 
 uc.on(uc.Events.Connect, async () => {
   // When the remote connects, we just set the device state. We are ready all the time!

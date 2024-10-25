@@ -84,46 +84,33 @@ const lightCmdHandler: CommandHandler = async function (entity, cmdId, params): 
   switch (cmdId) {
     case uc.entities.Light.Commands.Toggle:
       if (entity.attributes?.state === uc.entities.Light.States.Off) {
-        uc.getConfiguredEntities().updateEntityAttributes(
-          entity.id,
-          {
-            [uc.entities.Light.Attributes.State] : uc.entities.Light.States.On,
-            [uc.entities.Light.Attributes.Brightness] : 255,
-          }
-        );
+        uc.getConfiguredEntities().updateEntityAttributes(entity.id, {
+          [uc.entities.Light.Attributes.State]: uc.entities.Light.States.On,
+          [uc.entities.Light.Attributes.Brightness]: 255
+        });
       } else if (entity.attributes?.state === uc.entities.Light.States.On) {
-        uc.getConfiguredEntities().updateEntityAttributes(
-          entity.id,
-          {
-            [uc.entities.Light.Attributes.State] : uc.entities.Light.States.Off,
-            [uc.entities.Light.Attributes.Brightness] : 0,
-          }
-        );
+        uc.getConfiguredEntities().updateEntityAttributes(entity.id, {
+          [uc.entities.Light.Attributes.State]: uc.entities.Light.States.Off,
+          [uc.entities.Light.Attributes.Brightness]: 0
+        });
       }
       break;
     case uc.entities.Light.Commands.On:
       // params is optional! Use a default if not provided.
       // A real lamp might store the last brightness value, otherwise the integration could also keep track of the last value.
-      uc.getConfiguredEntities().updateEntityAttributes(
-        entity.id,
-        {
-          [uc.entities.Light.Attributes.State]: uc.entities.Light.States.On,
-          [uc.entities.Light.Attributes.Brightness]: params && params.brightness ? params.brightness : 127
-        }
-      );
-      uc.getConfiguredEntities().updateEntityAttributes(
-        "test_mediaplayer",
-        { [uc.entities.MediaPlayer.Attributes.Volume] : 24 }
-      );
+      uc.getConfiguredEntities().updateEntityAttributes(entity.id, {
+        [uc.entities.Light.Attributes.State]: uc.entities.Light.States.On,
+        [uc.entities.Light.Attributes.Brightness]: params && params.brightness ? params.brightness : 127
+      });
+      uc.getConfiguredEntities().updateEntityAttributes("test_mediaplayer", {
+        [uc.entities.MediaPlayer.Attributes.Volume]: 24
+      });
       break;
     case uc.entities.Light.Commands.Off:
-      uc.getConfiguredEntities().updateEntityAttributes(
-        entity.id,
-        {
-          [uc.entities.Light.Attributes.State]: uc.entities.Light.States.Off,
-          [uc.entities.Light.Attributes.Brightness]: 0
-        }
-      );
+      uc.getConfiguredEntities().updateEntityAttributes(entity.id, {
+        [uc.entities.Light.Attributes.State]: uc.entities.Light.States.Off,
+        [uc.entities.Light.Attributes.Brightness]: 0
+      });
       break;
     default:
       return uc.StatusCodes.NotImplemented;
@@ -137,14 +124,14 @@ const lightCmdHandler: CommandHandler = async function (entity, cmdId, params): 
 // The entity name can either be string (which will be mapped to english), or a Map with multiple language entries.
 const name = {
   ["de"]: "Mein Lieblingslicht",
-  ["en"]: "My favorite light",
+  ["en"]: "My favorite light"
 };
 
 const lightEntity = new uc.entities.Light("my_unique_light_id", name, {
   features: [uc.entities.Light.Features.OnOff, uc.entities.Light.Features.Dim],
   attributes: {
-    [uc.entities.Light.Attributes.State]: uc.entities.Light.States.Off, 
-    [uc.entities.Light.Attributes.Brightness]: 0,
+    [uc.entities.Light.Attributes.State]: uc.entities.Light.States.Off,
+    [uc.entities.Light.Attributes.Brightness]: 0
   }
 });
 lightEntity.setCmdHandler(lightCmdHandler);
@@ -160,22 +147,26 @@ const buttonEntity = new uc.entities.Button("my_button", "Push the button!", {
 uc.getAvailableEntities().addEntity(buttonEntity);
 
 // add a media-player entity
-const mediaPlayerEntity = new uc.entities.MediaPlayer("test_mediaplayer", {"en": "Foobar MediaPlayer"}, {
-  features: [
-    uc.entities.MediaPlayer.Features.OnOff,
-    uc.entities.MediaPlayer.Features.Dpad,
-    uc.entities.MediaPlayer.Features.Home,
-    uc.entities.MediaPlayer.Features.Menu,
-    uc.entities.MediaPlayer.Features.ChannelSwitcher,
-    uc.entities.MediaPlayer.Features.SelectSource,
-    uc.entities.MediaPlayer.Features.ColorButtons,
-    uc.entities.MediaPlayer.Features.PlayPause
-  ],
-  attributes: {
-    [uc.entities.MediaPlayer.Attributes.State]: uc.entities.MediaPlayer.States.Off, 
-    [uc.entities.MediaPlayer.Attributes.SourceList]: ["Radio", "Streaming", "Favorite 1", "Favorite 2", "Favorite 3"]
-  },
-  deviceClass: uc.entities.MediaPlayer.DeviceClasses.StreamingBox
-});
+const mediaPlayerEntity = new uc.entities.MediaPlayer(
+  "test_mediaplayer",
+  { en: "Foobar MediaPlayer" },
+  {
+    features: [
+      uc.entities.MediaPlayer.Features.OnOff,
+      uc.entities.MediaPlayer.Features.Dpad,
+      uc.entities.MediaPlayer.Features.Home,
+      uc.entities.MediaPlayer.Features.Menu,
+      uc.entities.MediaPlayer.Features.ChannelSwitcher,
+      uc.entities.MediaPlayer.Features.SelectSource,
+      uc.entities.MediaPlayer.Features.ColorButtons,
+      uc.entities.MediaPlayer.Features.PlayPause
+    ],
+    attributes: {
+      [uc.entities.MediaPlayer.Attributes.State]: uc.entities.MediaPlayer.States.Off,
+      [uc.entities.MediaPlayer.Attributes.SourceList]: ["Radio", "Streaming", "Favorite 1", "Favorite 2", "Favorite 3"]
+    },
+    deviceClass: uc.entities.MediaPlayer.DeviceClasses.StreamingBox
+  }
+);
 mediaPlayerEntity.setCmdHandler(sharedCmdHandler);
 uc.getAvailableEntities().addEntity(mediaPlayerEntity);

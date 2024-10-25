@@ -11,7 +11,7 @@ import { Entity } from "./entity.js";
 import { Button } from "./button.js";
 import { Climate } from "./climate.js";
 import { Cover } from "./cover.js";
-import { Light }from "./light.js";
+import { Light } from "./light.js";
 import { MediaPlayer } from "./media_player.js";
 import { Remote } from "./remote.js";
 import { Sensor } from "./sensor.js";
@@ -69,10 +69,7 @@ class Entities extends EventEmitter {
    * @param {Map<string, any> | Record<string, any>} attributes The attributes to merge into the entity's attributes
    * @returns {boolean} false if entity doesn't exist, true if attributes were merged.
    */
-  updateEntityAttributes(
-    id: string,
-    attributes: { [key: string]: string | number | boolean },
-  ): boolean {
+  updateEntityAttributes(id: string, attributes: { [key: string]: string | number | boolean }): boolean {
     if (!this.contains(id)) {
       return false;
     }
