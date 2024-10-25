@@ -14,12 +14,13 @@ import uc, { StatusCodes, CommandHandler } from "../../index.js";
  *                 UserDataResponse or UserConfirmationResponse
  * @return {Promise<uc.setup.SetupAction>} the setup action on how to continue
  */
-async function driverSetupHandler(msg: typeof uc.setup.DriverSetupRequest) {
+
+const driverSetupHandler = async function(msg: typeof uc.setup.DriverSetupRequest | typeof uc.setup.UserDataResponse) {
   if (msg instanceof uc.setup.DriverSetupRequest) {
-    return await handleDriverSetup(msg);
+    return await handleDriverSetup(msg as typeof uc.setup.DriverSetupRequest);
   }
   if (msg instanceof uc.setup.UserDataResponse) {
-    return await handleUserDataResponse(msg);
+    return await handleUserDataResponse(msg as typeof uc.setup.UserDataResponse);
   }
 
   // user confirmation not used in our demo setup process
@@ -38,7 +39,7 @@ async function driverSetupHandler(msg: typeof uc.setup.DriverSetupRequest) {
  * @return {Promise<uc.setup.SetupAction>} the setup action on how to continue
  */
 async function handleDriverSetup(msg: typeof uc.setup.DriverSetupRequest) {
-  // No support for reconfiguration :-)
+  // No support for reconfiguration :-)but 
   if (msg.reconfigure) {
     console.log("Ignoring driver reconfiguration request");
   }

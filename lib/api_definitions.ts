@@ -93,7 +93,7 @@ export enum IntegrationSetupError {
 /**
  * Driver setup request base class.
  */
-class SetupDriver {
+export class SetupDriver {
   // Base class logic here
 }
 
@@ -121,7 +121,7 @@ class SetupDriver {
  * - `SetupComplete` finishes the setup process and the UC Remote creates an integration instance.
  * - `SetupError` aborts the setup process.
  */
-class DriverSetupRequest extends SetupDriver {
+export class DriverSetupRequest extends SetupDriver {
   reconfigure: boolean;
   setupData: { [key: string]: string };
 
@@ -135,7 +135,7 @@ class DriverSetupRequest extends SetupDriver {
 /**
  * Provide requested driver setup data to the integration driver in a setup process.
  */
-class UserDataResponse extends SetupDriver {
+export class UserDataResponse extends SetupDriver {
   inputValues: { [key: string]: string };
 
   constructor(inputValues: { [key: string]: string }) {
@@ -147,7 +147,7 @@ class UserDataResponse extends SetupDriver {
 /**
  * Provide user confirmation response to the integration driver in a setup process.
  */
-class UserConfirmationResponse extends SetupDriver {
+export class UserConfirmationResponse extends SetupDriver {
   confirm: boolean;
 
   constructor(confirm: boolean) {
@@ -159,7 +159,7 @@ class UserConfirmationResponse extends SetupDriver {
 /**
  * Abort notification.
  */
-class AbortDriverSetup extends SetupDriver {
+export class AbortDriverSetup extends SetupDriver {
   error: string;
 
   constructor(error: string) {
@@ -171,14 +171,14 @@ class AbortDriverSetup extends SetupDriver {
 /**
  * Setup action response base class.
  */
-class SetupAction {
+export class SetupAction {
   // Base class logic here
 }
 
 /**
  * Setup action to request user input.
  */
-class RequestUserInput extends SetupAction {
+export class RequestUserInput extends SetupAction {
   title: string | Map<string, string> | { [key: string]: string };
   settings: Array<{ [key: string]: object | string }>;
 
@@ -201,7 +201,7 @@ class RequestUserInput extends SetupAction {
  * @param {string | null} image Optional base64 encoded image which will be shown between the header and footer texts.
  * @param {string | Map<string, string>|Object.<string, string> | null} footer Optional footer text.
  */
-class RequestUserConfirmation extends SetupAction {
+export class RequestUserConfirmation extends SetupAction {
   title: string | Map<string, string> | { [key: string]: string };
   header?: string | Map<string, string> | { [key: string]: string };
   image?: string;
@@ -224,7 +224,7 @@ class RequestUserConfirmation extends SetupAction {
 /**
  * Setup action to abort setup process due to an error.
  */
-class SetupError extends SetupAction {
+export class SetupError extends SetupAction {
   errorType: string;
 
   constructor(errorType: string = IntegrationSetupError.Other) {
@@ -236,11 +236,11 @@ class SetupError extends SetupAction {
 /**
  * Setup action to complete a successful setup process.
  */
-class SetupComplete extends SetupAction {
+export class SetupComplete extends SetupAction {
   // Marks setup as complete
 }
 
-export const setup = {
+const setup = {
   IntegrationSetupError,
   SetupDriver,
   DriverSetupRequest,
@@ -251,5 +251,7 @@ export const setup = {
   RequestUserInput,
   RequestUserConfirmation,
   SetupError,
-  SetupComplete
+  SetupComplete,
 };
+
+export default setup;
