@@ -29,7 +29,7 @@ export type CommandHandler = (
   entity: Entity,
   command: string,
   params?: { [key: string]: string | number | boolean },
-) => StatusCodes;
+) => Promise<StatusCodes>;
 
 export interface EntityParams {
   features?: string[];

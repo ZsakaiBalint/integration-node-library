@@ -9,11 +9,11 @@ import { EntityType } from "./entity.js";
 import { EventEmitter } from "events";
 import { Entity } from "./entity.js";
 import type { CommandHandler } from "./entity.js";
-import * as Button from "./button.js";
+import { Button } from "./button.js";                   //OK
 import { Climate } from "./climate.js";
 import { Cover } from "./cover.js";
-import * as Light from "./light.js";
-import * as MediaPlayer from "./media_player.js";
+import { Light }from "./light.js";
+import { MediaPlayer } from "./media_player.js";
 import { Remote } from "./remote.js";
 import { Sensor } from "./sensor.js";
 import { Switch } from "./switch.js";
@@ -132,6 +132,4 @@ class Entities extends EventEmitter {
   }
 }
 
-export { EntityType, Entities, Entity, Button, Climate, Cover, Light, MediaPlayer, Remote, Sensor, Switch };
-
-export type { CommandHandler };
+export { EntityType, Entities, Entity, Button, Climate, Cover, Light, MediaPlayer, Remote, Sensor, Switch, CommandHandler };

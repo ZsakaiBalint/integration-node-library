@@ -19,8 +19,6 @@ import * as ui from "./lib/entities/ui.js";
 import * as api_definitions from "./lib/api_definitions.js";
 import * as entities from "./lib/entities/entities.js";
 
-import { CommandHandler } from "./lib/entities/entities.js";
-
 interface Developer {
   name: string;
 }
@@ -879,5 +877,3 @@ const uc = Object.assign(new IntegrationAPI(), {
 };
 
 export default uc;
-
-export type { CommandHandler };

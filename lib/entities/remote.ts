@@ -126,15 +126,14 @@ export function createSequenceCmd(
   return new EntityCommand(Commands.SendCmdSequence, params);
 }
 
-interface OptionsInterface extends Record<string, string[] | DeviceButtonMapping[] | { pages: UiPage[] }> {
-  [Options.SimpleCommands]: string[];
-  [Options.ButtonMapping]: DeviceButtonMapping[];
-  [Options.UserInterface]: {
-    pages: UiPage[];
-  };
-}
-
 export class Remote extends Entity {
+
+  static States = States;
+  static Features = Features;
+  static Attributes = Attributes;
+  static Commands = Commands;
+  static Options = Options;
+
   /**
    * Constructs a new remote-entity.
    *
@@ -148,10 +147,15 @@ export class Remote extends Entity {
     name: string | { [key: string]: string },
     { features = [], attributes = {}, simpleCommands, buttonMapping, uiPages, area, cmdHandler }: RemoteParams = {}
   ) {
-    const options: OptionsInterface = {
-      [Options.SimpleCommands]: simpleCommands ?? [],
-      [Options.ButtonMapping]: buttonMapping ?? [],
-      [Options.UserInterface]: { pages: uiPages  ?? [] },
+    const options: { [key: string]: string | number | boolean | object } = {};
+    if(simpleCommands) {
+      options[Options.SimpleCommands] = simpleCommands;
+    }
+    if (buttonMapping) {
+      options[Options.ButtonMapping] = buttonMapping;
+    }
+    if (uiPages) {
+      options[Options.UserInterface] = { pages: uiPages };
     }
     
     super(id, name, EntityType.Remote, { features, attributes, options, area, cmdHandler });

@@ -3,37 +3,18 @@
 //uc.init("light-driver.json");
 
 import uc from "../../index.js";
-import Button from "../../lib/entities/button.js";
-import Light from "../../lib/entities/light.js";
-import MediaPlayer, { ATTRIBUTES, STATES } from "../../lib/entities/media_player.js";
-import {
-  FEATURES as MEDIAPLAYER_FEATURES,
-  ATTRIBUTES as MEDIAPLAYER_ATTRIBUTES,
-  STATES as MEDIAPLAYER_STATES,
-  DEVICECLASSES as MEDIAPLAYER_DEVICECLASSES
-} from "../../lib/entities/media_player.js";
-import { COMMANDS as BUTTONCOMMANDS } from "../../lib/entities/button.js";
-import { STATUS_CODES } from "http";
-import { DEVICE_STATES, EVENTS as API_EVENTS } from "../../lib/api_definitions.js";
-import { CommandHandler } from "../../lib/entities/entity.js";
-import {
-  COMMANDS as LIGHT_COMMANDS,
-  STATES as LIGHT_STATES,
-  ATTRIBUTES as LIGHT_ATTRIBUTES,
-  FEATURES as LIGHT_FEATURES
-} from "../../lib/entities/light.js";
 
 uc.init("light-driver.json");
 
-uc.on(API_EVENTS.CONNECT, async () => {
-  await uc.setDeviceState(DEVICE_STATES.CONNECTED);
+uc.on(uc.Events.Connect, async () => {
+  await uc.setDeviceState(uc.DeviceStates.Connected);
 });
 
-uc.on(API_EVENTS.DISCONNECT, async () => {
-  await uc.setDeviceState(DEVICE_STATES.DISCONNECTED);
+uc.on(uc.Events.Disconnect, async () => {
+  await uc.setDeviceState(uc.DeviceStates.Disconnected);
 });
 
-uc.on(API_EVENTS.SUBSCRIBE_ENTITIES, async (entityIds) => {
+uc.on(uc.Events.SubscribeEntities, async (entityIds) => {
   // the integration will configure entities and subscribe for entity update events
   // the UC library automatically adds the subscribed entities
   // from available to configured
@@ -43,7 +24,7 @@ uc.on(API_EVENTS.SUBSCRIBE_ENTITIES, async (entityIds) => {
   });
 });
 
-uc.on(API_EVENTS.UNSUBSCRIBE_ENTITIES, async (entityIds: string[]) => {
+uc.on(uc.Events.UnsubscribeEntities, async (entityIds: string[]) => {
   // when the integration unsubscribed from certain entity updates,
   // the UC library automatically remove the unsubscribed entities
   // from configured
@@ -72,18 +53,18 @@ const sharedCmdHandler: CommandHandler = async function (entity, cmdId, params):
     if (lightEntity) {
       await lightCmdHandler(lightEntity, LIGHT_COMMANDS.TOGGLE);
     }
-    return STATUS_CODES.OK ?? "OK";
+    return uc.StatusCodes.Ok ?? "OK";
   }
 
   if (entity.id === "test_mediaplayer") {
     console.log("Got %s media-player command request: %s", entity.id, cmdId, params || "");
 
-    return STATUS_CODES.OK ?? "OK";
+    return uc.StatusCodes.Ok ?? "OK";
   }
 
   console.log("Got %s command request: %s", entity.id, cmdId);
 
-  return STATUS_CODES.OK ?? "OK";
+  return uc.StatusCodes.Ok ?? "OK";
 };
 
 /**
@@ -199,7 +180,7 @@ const mediaPlayerEntity = new MediaPlayer("test_mediaplayer", new Map([["en", "F
     MEDIAPLAYER_FEATURES.PLAY_PAUSE
   ],
   attributes: defaultAttributes,
-  deviceClass: MEDIAPLAYER_DEVICECLASSES.STREAMING_BOX
+  deviceClass: uc.entities.MediaPlayer.DeviceClasses.StreamingBox
 });
 mediaPlayerEntity.setCmdHandler(sharedCmdHandler);
 uc.getAvailableEntities().addEntity(mediaPlayerEntity);

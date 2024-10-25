@@ -18,7 +18,6 @@ export enum Attributes {
   State = "state",
 };
 
-// Button commands
 export enum Commands {
   Push = "push"
 }
@@ -34,6 +33,11 @@ interface ButtonParams {
  * for more information.
  */
 export class Button extends Entity {
+
+  static States = States;
+  static Attributes = Attributes;
+  static Commands = Commands;
+
   /**
    * Constructs a new button entity.
    *

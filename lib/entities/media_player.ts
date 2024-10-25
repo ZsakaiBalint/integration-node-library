@@ -209,6 +209,16 @@ interface MediaPlayerParams {
  */
 
 export class MediaPlayer extends Entity {
+
+  static States = States;
+  static Features = Features;
+  static Attributes = Attributes;
+  static Commands = Commands;
+  static DeviceClasses = DeviceClasses;
+  static Options = Options;
+  static MediaType = MediaType;
+  static RepeatMode = RepeatMode;
+
   /**
    * Constructs a new media-player entity.
    *

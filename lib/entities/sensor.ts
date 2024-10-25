@@ -70,6 +70,14 @@ interface SensorParams {
 }
 
 export class Sensor extends Entity {
+
+  static States = States;
+  static Features = Features;
+  static Attributes = Attributes;
+  static Commands = Commands;
+  static DeviceClasses = DeviceClasses;
+  static Options = Options;
+
   /**
    * Constructs a new sensor entity.
    *
