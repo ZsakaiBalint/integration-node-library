@@ -565,14 +565,14 @@ class IntegrationAPI extends EventEmitter {
     let result = false;
     try {
       const action = await this.setupHandler(
-        new api_definitions.setup.DriverSetupRequest(reconfigure, data.setup_data)
+        new api_definitions.DriverSetupRequest(reconfigure, data.setup_data)
       );
 
-      if (action instanceof api_definitions.setup.RequestUserInput) {
+      if (action instanceof api_definitions.RequestUserInput) {
         await this.driverSetupProgress(wsHandle);
         await this.requestDriverSetupUserInput(wsHandle, action.title, action.settings);
         result = true;
-      } else if (action instanceof api_definitions.setup.RequestUserConfirmation) {
+      } else if (action instanceof api_definitions.RequestUserConfirmation) {
         await this.driverSetupProgress(wsHandle);
         await this.requestDriverSetupUserConfirmation(
           wsHandle,
@@ -582,10 +582,10 @@ class IntegrationAPI extends EventEmitter {
           String(action.footer)
         );
         result = true;
-      } else if (action instanceof api_definitions.setup.SetupComplete) {
+      } else if (action instanceof api_definitions.SetupComplete) {
         await this.driverSetupComplete(String(wsHandle));
         result = true;
-      } else if (action instanceof api_definitions.setup.SetupError) {
+      } else if (action instanceof api_definitions.SetupError) {
         await this.driverSetupError(wsHandle, action.errorType);
         result = true;
       }
@@ -630,17 +630,17 @@ class IntegrationAPI extends EventEmitter {
     // new setupHandler logic as in Python integration library
     let result = false;
     try {
-      let action = new api_definitions.setup.SetupError();
+      let action = new api_definitions.SetupError();
       if (data.input_values) {
-        action = await this.setupHandler(new api_definitions.setup.UserDataResponse(data.input_values));
+        action = await this.setupHandler(new api_definitions.UserDataResponse(data.input_values));
       } else if (data.confirm) {
-        action = await this.setupHandler(new api_definitions.setup.UserConfirmationResponse(data.confirm));
+        action = await this.setupHandler(new api_definitions.UserConfirmationResponse(data.confirm));
       }
 
-      if (action instanceof api_definitions.setup.RequestUserInput) {
+      if (action instanceof api_definitions.RequestUserInput) {
         await this.requestDriverSetupUserInput(wsHandle, action.title, action.settings);
         result = true;
-      } else if (action instanceof api_definitions.setup.RequestUserConfirmation) {
+      } else if (action instanceof api_definitions.RequestUserConfirmation) {
         await this.requestDriverSetupUserConfirmation(
           wsHandle,
           action.title,
@@ -649,10 +649,10 @@ class IntegrationAPI extends EventEmitter {
           String(action.footer)
         );
         result = true;
-      } else if (action instanceof api_definitions.setup.SetupComplete) {
+      } else if (action instanceof api_definitions.SetupComplete) {
         await this.driverSetupComplete(wsHandle.wsId);
         result = true;
-      } else if (action instanceof api_definitions.setup.SetupError) {
+      } else if (action instanceof api_definitions.SetupError) {
         await this.driverSetupError(wsHandle, action.errorType);
         result = true;
       }
