@@ -5,8 +5,6 @@
  * @license Apache License 2.0, see LICENSE for more details.
  */
 
-import assert from "node:assert";
-
 // Physical buttons
 export enum Buttons {
   Back = "BACK",
@@ -50,14 +48,6 @@ export class DeviceButtonMapping {
   long_press?: EntityCommand;
 
   constructor(button: Buttons, shortPress?: EntityCommand, longPress?: EntityCommand) {
-    assert(
-      shortPress === undefined || shortPress instanceof EntityCommand,
-      "shortPress parameter must be an EntityCommand"
-    );
-    assert(
-      longPress === undefined || longPress instanceof EntityCommand,
-      "longPress parameter must be an EntityCommand"
-    );
     this.button = button;
     this.short_press = shortPress;
     this.long_press = longPress;
@@ -122,14 +112,6 @@ export class UiItem {
     location: Location,
     { size, icon, text, command }: { size?: Size; icon?: string; text?: string; command?: EntityCommand }
   ) {
-    assert(location instanceof Location, "location parameter must be of type Location");
-    assert(size === undefined || size instanceof Size, "size parameter must be of type Size");
-    assert(icon === undefined || typeof icon === "string", "icon parameter must be of type string");
-    assert(text === undefined || typeof text === "string", "text parameter must be of type string");
-    assert(
-      command === undefined || command instanceof EntityCommand,
-      "command parameter must be of type EntityCommand"
-    );
     this.type = type;
     this.location = location;
     this.size = size;

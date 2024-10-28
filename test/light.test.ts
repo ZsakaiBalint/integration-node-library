@@ -18,7 +18,7 @@ test("Light constructor without parameter object creates default Light class", (
 });
 
 test("Light constructor with parameter object", (t) => {
-  const attributes: Partial<Record<Attributes, States | number | string>> = {
+  const attributes: Partial<Record<Attributes, States | number>> = {
     [Attributes.State]: States.Unavailable
   };
 

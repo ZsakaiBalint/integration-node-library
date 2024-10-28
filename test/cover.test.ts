@@ -18,7 +18,7 @@ test("Cover constructor without parameter object creates default Cover class", (
 });
 
 test("Cover constructor with parameter object", (t) => {
-  const attributes: Partial<Record<Attributes, States | number | string>> = {
+  const attributes: Partial<Record<Attributes, States | number>> = {
     [Attributes.State]: States.Unavailable
   };
 
