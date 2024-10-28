@@ -20,6 +20,33 @@ Requirements:
   - The Remote Two firmware up to version 1.9.2 contains Node.js v16.18
   - Newer firmware versions contain Node.js v20.16
 
+## Usage
+
+* **Format Code**: Automatically format all code files according to the project's style guide.
+```shell
+npm run format
+```
+
+* **Check Code Quality**: Check code for style and linting issues before committing or merging.
+```shell
+npm run code-check
+```
+
+* **Lint and Auto-Fix**: Automatically fix simple code issues (like indentation or unused imports).
+```shell
+npm run lint
+```
+
+* **Build Project**: Compile the project for production.
+```shell
+npm run build
+```
+
+* **Build and Test**: Compile and test the project to verify all functionalities.
+```shell
+npm run test
+```
+
 ## Installation
 
 This module is not yet available in the npmjs registry and must be installed from GitHub:
