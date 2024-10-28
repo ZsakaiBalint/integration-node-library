@@ -49,9 +49,9 @@ export enum Options {
 // Define types for the parameters in the constructor
 interface SwitchParams {
   features?: Features[];
-  attributes?: Record<Attributes, States>;
+  attributes?: Partial<Record<Attributes, States>>;
   deviceClass?: DeviceClasses;
-  options?: Record<Options, boolean>;
+  options?: Partial<Record<Options, boolean>>;
   area?: string;
   cmdHandler?: CommandHandler;
 }
