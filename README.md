@@ -22,27 +22,32 @@ Requirements:
 
 ## Usage
 
-* **Format Code**: Automatically format all code files according to the project's style guide.
+- **Format Code**: Automatically format all code files according to the project's style guide.
+
 ```shell
 npm run format
 ```
 
-* **Check Code Quality**: Check code for style and linting issues before committing or merging.
+- **Check Code Quality**: Check code for style and linting issues before committing or merging.
+
 ```shell
 npm run code-check
 ```
 
-* **Lint and Auto-Fix**: Automatically fix simple code issues (like indentation or unused imports).
+- **Lint and Auto-Fix**: Automatically fix simple code issues (like indentation or unused imports).
+
 ```shell
 npm run lint
 ```
 
-* **Build Project**: Compile the project for production.
+- **Build Project**: Compile the project for production.
+
 ```shell
 npm run build
 ```
 
-* **Build and Test**: Compile and test the project to verify all functionalities.
+- **Build and Test**: Compile and test the project to verify all functionalities.
+
 ```shell
 npm run test
 ```

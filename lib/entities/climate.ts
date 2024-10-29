@@ -65,8 +65,8 @@ export enum Options {
 }
 
 export enum TemperatureUnit {
-  Celsius = "C",
-  Fahrenheit = "F"
+  Celsius = "CELSIUS",
+  Fahrenheit = "FAHRENHEIT"
 }
 
 // Define types for the parameters in the constructor
