@@ -54,7 +54,7 @@ export class Entity {
   public device_class?: string;
   public options?: { [key: string]: string | number | boolean | object };
   public area?: string;
-  private cmdHandler?: CommandHandler;
+  #cmdHandler?: CommandHandler;
 
   /**
    * Constructs a new entity.
@@ -82,7 +82,7 @@ export class Entity {
     this.device_class = deviceClass;
     this.options = options;
     this.area = area;
-    this.cmdHandler = cmdHandler;
+    this.#cmdHandler = cmdHandler;
   }
 
   /**
@@ -90,14 +90,14 @@ export class Entity {
    * @param cmdHandler Callback handler for entity commands.
    */
   setCmdHandler(cmdHandler: CommandHandler) {
-    this.cmdHandler = cmdHandler;
+    this.#cmdHandler = cmdHandler;
   }
 
   /**
    * @return true if a callback handler for entity commands has been installed.
    */
   get hasCmdHandler(): boolean {
-    return this.cmdHandler !== undefined;
+    return this.#cmdHandler !== undefined;
   }
 
   /**
@@ -109,8 +109,8 @@ export class Entity {
    * @return command status code to acknowledge to UC Remote
    */
   async command(cmdId: string, params?: { [key: string]: string | number | boolean }): Promise<StatusCodes> {
-    if (this.cmdHandler) {
-      return await this.cmdHandler(this, cmdId, params);
+    if (this.#cmdHandler) {
+      return await this.#cmdHandler(this, cmdId, params);
     }
 
     log.warn("No command handler for %s: cannot execute command '%s' %s", this.id, cmdId, params || "");
